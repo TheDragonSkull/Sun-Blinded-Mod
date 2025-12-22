@@ -28,22 +28,22 @@ public class InteractionHandler {
         Player player = event.player;
         Level level = player.level();
         if (!level.isClientSide) return;
+
         boolean lookingAtSun = SunglassesUtils.isLookingAtSun(player);
 
         if (SunglassesUtils.hasSunglasses(player)) {
             SunExposureClient.exposure = 0f;
-            return;
-        }
-
-        if (SunExposureClient.blindnessCooldown > 0) {
-            SunExposureClient.blindnessCooldown--;
-            return;
-        }
-
-        if (lookingAtSun) {
-            SunExposureClient.exposure += 1f / (5f * 20f); // 5 seconds
         } else {
-            SunExposureClient.exposure -= 1f / (15f * 20f);
+            if (SunExposureClient.blindnessCooldown > 0) {
+                SunExposureClient.blindnessCooldown--;
+                return;
+            }
+
+            if (lookingAtSun) {
+                SunExposureClient.exposure += 1f / (5f * 20f);
+            } else {
+                SunExposureClient.exposure -= 1f / (5f * 20f);
+            }
         }
 
         SunExposureClient.exposure = Mth.clamp(
@@ -51,21 +51,18 @@ public class InteractionHandler {
         );
 
         if (SunAfterimageClient.wasLookingAtSun && !lookingAtSun
-                && SunExposureClient.exposure > 0.05F) {
-            SunAfterimageClient.requestCapture();
+                && SunExposureClient.exposure > 0.15F) {
+            SunAfterimageClient.requestCapture(SunExposureClient.exposure);
         }
 
         SunAfterimageClient.wasLookingAtSun = lookingAtSun;
 
         if (SunExposureClient.exposure >= 1.0f) {
-            player.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 100));
+            player.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 100)); //TODO: se queda perma
             SunExposureClient.exposure = 0f;
             SunExposureClient.blindnessCooldown = 100;
         }
 
-        if (SunExposureClient.exposure <= 0.01F) {
-            SunAfterimageClient.reset();
-        }
     }
 
     @SubscribeEvent
@@ -73,20 +70,8 @@ public class InteractionHandler {
         if (!SunAfterimageClient.active) return;
         if (SunAfterimageClient.snapshot == null) return;
 
-        float exposure = SunExposureClient.exposure;
-
-        // cuando ya no hay deslumbramiento → borrar
-        if (exposure <= 0.01F) {
-            SunAfterimageClient.reset();
-            return;
-        }
-
-        // alpha ligada a exposure
-        float alpha = Mth.clamp(
-                (float)Math.pow(exposure, 0.7F) * 0.5F,
-                0.0F,
-                0.5F
-        );
+        float alpha = (SunAfterimageClient.fadeTicks
+                / (float) SunAfterimageClient.MAX_FADE_TICKS) * 0.5F;
 
         Minecraft mc = Minecraft.getInstance();
         Window win = mc.getWindow();

@@ -4,6 +4,7 @@ import com.mojang.blaze3d.pipeline.RenderTarget;
 import com.mojang.blaze3d.pipeline.TextureTarget;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.Minecraft;
+import net.minecraft.util.Mth;
 import org.lwjgl.opengl.GL30;
 
 public class SunAfterimageClient {
@@ -13,9 +14,15 @@ public class SunAfterimageClient {
     public static boolean wasLookingAtSun = false;
     private static boolean captureRequested = false;
 
-    public static void requestCapture() {
+    public static int fadeTicks = 0;
+    public static final int MAX_FADE_TICKS = 100;
+
+    private static float requestedExposure;
+
+    public static void requestCapture(float exposure) {
         if (!active) {
             captureRequested = true;
+            requestedExposure = exposure;
         }
     }
 
@@ -46,7 +53,24 @@ public class SunAfterimageClient {
 
         snapshot = copy;
         active = true;
+
+        fadeTicks = Mth.clamp(
+                Math.round(requestedExposure * MAX_FADE_TICKS),
+                1,
+                MAX_FADE_TICKS
+        );
+
         captureRequested = false;
+    }
+
+    public static void tickFade() {
+        if (!active) return;
+
+        fadeTicks--;
+
+        if (fadeTicks <= 0) {
+            reset();
+        }
     }
 
     public static void reset() {
@@ -55,6 +79,7 @@ public class SunAfterimageClient {
             snapshot = null;
         }
         active = false;
+        fadeTicks = 0;
         captureRequested = false;
     }
 }

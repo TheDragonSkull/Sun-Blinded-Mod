@@ -41,6 +41,7 @@ public class ClientEvents {
         RenderSystem.enableDepthTest();
         RenderSystem.disableBlend();
     }
+    //TODO: Set/Map/Enum key - value -> dye/glass color - ARGB
 
 
     @SubscribeEvent
@@ -48,17 +49,8 @@ public class ClientEvents {
         if (event.phase != TickEvent.Phase.END) return;
 
         SunAfterimageClient.captureIfRequested();
-
-        if (!SunAfterimageClient.active) return;
-
-        SunAfterimageClient.alpha -= 0.02F;
-
-        if (SunAfterimageClient.alpha <= 0.0F) {
-            SunAfterimageClient.reset();
-        }
+        SunAfterimageClient.tickFade();
     }
 
-
-    //TODO: Set/Map key - value -> dye/glass color - ARGB
 
 }
