@@ -1,0 +1,17 @@
+{
+  "blend": {
+    "func": "add",
+    "srcrgb": "one",
+    "dstrgb": "zero"
+  },
+  "vertex": "sunblinded:sun_blind",
+  "fragment": "sunblinded:sun_afterimage",
+  "attributes": [ "Position" ],
+  "samplers": [
+    { "name": "DiffuseSampler" },
+    { "name": "Prev" }
+  ],
+  "uniforms": [
+    { "name": "Decay", "type": "float", "count": 1, "values": [ 0.9 ] }
+  ]
+}

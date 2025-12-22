@@ -1,11 +1,16 @@
 package net.thedragonskull.sunblinded.events;
 
+import com.mojang.blaze3d.pipeline.RenderTarget;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderGuiEvent;
+import net.minecraftforge.client.event.RenderGuiOverlayEvent;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.thedragonskull.sunblinded.SunBlinded;
@@ -35,6 +40,22 @@ public class ClientEvents {
 
         RenderSystem.enableDepthTest();
         RenderSystem.disableBlend();
+    }
+
+
+    @SubscribeEvent
+    public static void onClientTick(TickEvent.ClientTickEvent event) {
+        if (event.phase != TickEvent.Phase.END) return;
+
+        SunAfterimageClient.captureIfRequested();
+
+        if (!SunAfterimageClient.active) return;
+
+        SunAfterimageClient.alpha -= 0.02F;
+
+        if (SunAfterimageClient.alpha <= 0.0F) {
+            SunAfterimageClient.reset();
+        }
     }
 
 

@@ -1,13 +1,19 @@
 #version 150
 
-in vec3 Position;
-in vec2 UV0;
-
-out vec2 texCoord;
+in vec4 Position;
 
 uniform mat4 ProjMat;
+uniform vec2 InSize;
+uniform vec2 OutSize;
 
-void main() {
-    texCoord = UV0;
-    gl_Position = ProjMat * vec4(Position, 1.0);
+out vec2 texCoord;
+out vec2 oneTexel;
+
+void main(){
+    vec4 outPos = ProjMat * vec4(Position.xy, 0.0, 1.0);
+    gl_Position = vec4(outPos.xy, 0.2, 1.0);
+
+    oneTexel = 1.0 / InSize;
+
+    texCoord = Position.xy / OutSize;
 }

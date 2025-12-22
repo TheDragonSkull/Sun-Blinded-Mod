@@ -1,18 +1,13 @@
 {
   "targets": [
-    "swap"
+    "swap",
+    "afterimage"
   ],
   "passes": [
     {
-      "name": "color_convolve",
+      "name": "sunblinded:sun_blind",
       "intarget": "minecraft:main",
-      "outtarget": "swap",
-      "uniforms": [
-        {
-          "name": "Saturation",
-          "values": [ 1.0 ]
-        }
-      ]
+      "outtarget": "swap"
     },
     {
       "name": "blit",
