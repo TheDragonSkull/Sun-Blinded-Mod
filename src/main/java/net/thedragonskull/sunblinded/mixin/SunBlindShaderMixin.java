@@ -26,7 +26,7 @@ public abstract class SunBlindShaderMixin {
         Minecraft mc = Minecraft.getInstance();
         if (mc.player == null) return;
 
-        if (!SunBlindClient.shaderLoaded) {
+        if (!SunBlindClient.shaderLoaded || mc.gameRenderer.currentEffect() == null) {
             mc.gameRenderer.loadEffect(SUNBLIND);
             SunBlindClient.shaderLoaded = true;
         }

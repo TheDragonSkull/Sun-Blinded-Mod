@@ -1,7 +1,6 @@
 {
   "targets": [
-    "swap",
-    "afterimage"
+    "swap"
   ],
   "passes": [
     {

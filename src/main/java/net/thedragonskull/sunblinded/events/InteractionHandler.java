@@ -4,7 +4,6 @@ import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -52,7 +51,7 @@ public class InteractionHandler {
 
         if (SunAfterimageClient.wasLookingAtSun && !lookingAtSun
                 && SunExposureClient.exposure > 0.15F) {
-            SunAfterimageClient.requestCapture(SunExposureClient.exposure);
+            SunAfterimageClient.requestCapture(SunExposureClient.exposure); //TODO: al poner las gafas si estaba mirando al sol se genere el afterimage
         }
 
         SunAfterimageClient.wasLookingAtSun = lookingAtSun;
