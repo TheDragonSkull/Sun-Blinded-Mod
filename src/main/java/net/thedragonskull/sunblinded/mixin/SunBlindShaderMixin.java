@@ -35,8 +35,8 @@ public abstract class SunBlindShaderMixin {
 
         float eased = (float) Mth.smoothstep(exposure);
         float saturation = 1.0F + exposure * 20.5F;
-        float brightness = 1.0F + eased * 0.4F;
-        float burn = eased * 0.25F;
+        float brightness = 1.0F + eased * 0.8F;
+        float burn = eased * 0.5F;
 
         PostChain chain = mc.gameRenderer.currentEffect();
         if (chain != null) {
@@ -45,6 +45,7 @@ public abstract class SunBlindShaderMixin {
                 effect.safeGetUniform("Saturation").set(saturation);
                 effect.safeGetUniform("ColorScale").set(brightness, brightness, brightness);
                 effect.safeGetUniform("Offset").set(burn, burn, burn);
+                effect.safeGetUniform("Gray").set(0.4F, 0.5F, 0.1F);
             }
         }
     }

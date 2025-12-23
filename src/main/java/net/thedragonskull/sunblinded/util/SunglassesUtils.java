@@ -18,7 +18,7 @@ public class SunglassesUtils {
     /**
      * Returns true if player is looking at the sun (current tick).
      */
-    public static boolean isLookingAtSun(Player player) { //TODO: only works in first person
+    public static boolean isLookingAtSun(Player player) {
         Level level = player.level();
         if (!level.isClientSide) return false;
 

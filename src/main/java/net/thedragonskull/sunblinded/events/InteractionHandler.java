@@ -31,6 +31,11 @@ public class InteractionHandler {
         boolean lookingAtSun = SunglassesUtils.isLookingAtSun(player);
 
         if (SunglassesUtils.hasSunglasses(player)) {
+
+            if (lookingAtSun && SunExposureClient.exposure > 0.15F) {
+                SunAfterimageClient.requestCapture(SunExposureClient.exposure);
+            }
+
             SunExposureClient.exposure = 0f;
         } else {
             if (SunExposureClient.blindnessCooldown > 0) {
@@ -51,7 +56,7 @@ public class InteractionHandler {
 
         if (SunAfterimageClient.wasLookingAtSun && !lookingAtSun
                 && SunExposureClient.exposure > 0.15F) {
-            SunAfterimageClient.requestCapture(SunExposureClient.exposure); //TODO: al poner las gafas si estaba mirando al sol se genere el afterimage
+            SunAfterimageClient.requestCapture(SunExposureClient.exposure);
         }
 
         SunAfterimageClient.wasLookingAtSun = lookingAtSun;
