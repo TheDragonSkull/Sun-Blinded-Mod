@@ -12,10 +12,16 @@ public class ModRecipes {
     public static final DeferredRegister<RecipeSerializer<?>> RECIPES =
             DeferredRegister.create(Registries.RECIPE_SERIALIZER, SunBlinded.MOD_ID);
 
-    public static final RegistryObject<RecipeSerializer<?>> COLOR_SUNGLASSES =
+    public static final RegistryObject<RecipeSerializer<?>> SUNGLASSES_DYE =
             RECIPES.register(
-                    "color_sunglasses",
-                    () -> new SimpleCraftingRecipeSerializer<>(ColorSunglassesRecipe::new)
+                    "sunglasses_dye",
+                    () -> new SimpleCraftingRecipeSerializer<>(SunglassesDyeRecipe::new)
+            );
+
+    public static final RegistryObject<RecipeSerializer<?>> SUNGLASSES_CLEAR =
+            RECIPES.register(
+                    "sunglasses_clear",
+                    () -> new SimpleCraftingRecipeSerializer<>(SunglassesClearRecipe::new)
             );
 
     public static void register(IEventBus eventBus) {

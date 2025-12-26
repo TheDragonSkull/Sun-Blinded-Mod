@@ -42,7 +42,6 @@ public class ClientEvents {
         RenderSystem.enableDepthTest();
         RenderSystem.disableBlend();
     }
-    //TODO: Set/Map/Enum key - value -> dye/glass color - ARGB
 
     private static int getOverlayColor(ItemStack sunglasses) {
         String glassColor = SunglassesUtils.getColor(sunglasses);

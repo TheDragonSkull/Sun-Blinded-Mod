@@ -1,0 +1,9 @@
+{
+  "type": "sunblinded:sunglasses_clear",
+  "base": {
+    "item": "sunblinded:sunglasses"
+  },
+  "addition": {
+    "item": "minecraft:water_bucket"
+  }
+}
