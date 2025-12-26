@@ -2,17 +2,27 @@ package net.thedragonskull.sunblinded.util;
 
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.thedragonskull.sunblinded.item.ModItems;
 import net.thedragonskull.sunblinded.item.custom.Sunglasses;
+
+import javax.annotation.Nullable;
 
 public class SunglassesUtils {
 
     public static boolean hasSunglasses(Player player) {
         return player.getItemBySlot(EquipmentSlot.HEAD).getItem() instanceof Sunglasses;
+    }
+
+    @Nullable
+    public static ItemStack getEquippedSunglasses(Player player) {
+        ItemStack stack = player.getItemBySlot(EquipmentSlot.HEAD);
+        return stack.is(ModItems.SUNGLASSES.get()) ? stack : null;
     }
 
     /**
@@ -47,6 +57,20 @@ public class SunglassesUtils {
         boolean sunVisible = result.getType() == HitResult.Type.MISS;
 
         return level.isDay() && dot > 0.8 && sunVisible;
+    }
+
+    @Nullable
+    public static String getColor(ItemStack stack) {
+        if (!stack.hasTag()) return null;
+        var tag = stack.getTag();
+        return tag.contains("color") ? tag.getString("color") : null;
+    }
+
+    public static float sunglassesModel(String color) {
+        return switch (color) {
+            case "orange" -> 1.0F;
+            default -> 0.0F;
+        };
     }
 
 }

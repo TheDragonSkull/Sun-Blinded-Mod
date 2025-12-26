@@ -1,3 +1,6 @@
 {
-  "item.sunblinded.base_sunglasses": "Classic Sunglasses"
+  "item.sunblinded.sunglasses": "Classic Sunglasses",
+  "item.sunblinded.sunglasses.colored": "%s Sunglasses",
+
+  "color.sunblinded.orange": "Orange"
 }

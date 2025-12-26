@@ -12,7 +12,7 @@ public class ModItems {
     public static final DeferredRegister<Item> ITEMS =
             DeferredRegister.create(ForgeRegistries.ITEMS, SunBlinded.MOD_ID) ;
 
-    public static final RegistryObject<Item> BASE_SUNGLASSES = ITEMS.register("base_sunglasses",
+    public static final RegistryObject<Item> SUNGLASSES = ITEMS.register("sunglasses",
             () -> new Sunglasses(new Item.Properties().stacksTo(1)));
 
     public static void register(IEventBus eventBus) {

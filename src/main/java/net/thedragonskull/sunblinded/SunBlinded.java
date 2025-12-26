@@ -12,6 +12,8 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.thedragonskull.sunblinded.item.ModItems;
+import net.thedragonskull.sunblinded.recipe.ModRecipes;
+import net.thedragonskull.sunblinded.util.ModItemProperties;
 import org.slf4j.Logger;
 
 @Mod(SunBlinded.MOD_ID)
@@ -27,6 +29,7 @@ public class SunBlinded {
         MinecraftForge.EVENT_BUS.register(this);
 
         ModItems.register(modEventBus);
+        ModRecipes.register(modEventBus);
 
         modEventBus.addListener(this::addCreative);
     }
@@ -41,6 +44,7 @@ public class SunBlinded {
     public static class ClientModEvents {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
+            ModItemProperties.addCustomItemProperties();
         }
     }
 }
