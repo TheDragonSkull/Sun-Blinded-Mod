@@ -114,14 +114,12 @@ minecraft {
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
-    // Put repositories for dependencies here
-    // ForgeGradle automatically adds the Forge maven and Maven Central for you
-
-    // If you have mod jar dependencies in ./libs, you can declare them as a repository like so.
-    // See https://docs.gradle.org/current/userguide/declaring_repositories.html#sub:flat_dir_resolver
-    // flatDir {
-    //     dir 'libs'
-    // }
+    repositories {
+        maven {
+            name = "Illusive Soulworks maven"
+            url = "https://maven.theillusivec4.top/"
+        }
+    }
 }
 
 dependencies {
@@ -133,6 +131,11 @@ dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+
+    // Compile against only the API artifact
+    compileOnly(fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}:api"))
+    // Use the full Curios API jar at runtime
+    runtimeOnly(fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}"))
 
     // Example mod dependency with JEI - using fg.deobf() ensures the dependency is remapped to your development mappings
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime
@@ -166,7 +169,7 @@ tasks.named('processResources', ProcessResources).configure {
             forge_version: forge_version, forge_version_range: forge_version_range,
             loader_version_range: loader_version_range,
             mod_id: mod_id, mod_name: mod_name, mod_license: mod_license, mod_version: mod_version,
-            mod_authors: mod_authors, mod_description: mod_description,
+            mod_authors: mod_authors, mod_description: mod_description, curios_version: curios_version
     ]
     inputs.properties replaceProperties
 

@@ -5,20 +5,74 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.CraftingContainer;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.thedragonskull.sunblinded.SunBlinded;
+import net.thedragonskull.sunblinded.item.ModItems;
 import net.thedragonskull.sunblinded.util.SunglassesUtils;
+import top.theillusivec4.curios.api.CuriosApi;
 
 @Mod.EventBusSubscriber(modid = SunBlinded.MOD_ID)
 public class InteractionHandler {
+
+    @SubscribeEvent
+    public static void onItemCrafted(PlayerEvent.ItemCraftedEvent event) {
+
+        ItemStack result = event.getCrafting();
+        Player player = event.getEntity();
+
+        if (!result.is(ModItems.SUNGLASSES.get())) return;
+
+        CraftingContainer inv = (CraftingContainer) event.getInventory();
+
+        boolean hadColorBefore = false;
+
+        for (int i = 0; i < inv.getContainerSize(); i++) {
+            ItemStack stack = inv.getItem(i);
+            if (stack.is(ModItems.SUNGLASSES.get())
+                    && stack.hasTag()
+                    && stack.getTag().contains("color")) {
+                hadColorBefore = true;
+                break;
+            }
+        }
+
+        CompoundTag tag = result.getTag();
+
+        // Clean
+        if (hadColorBefore && (tag == null || !tag.contains("color"))) {
+            player.level().playSound(null,
+                    player.blockPosition(),
+                    SoundEvents.BUCKET_EMPTY,
+                    SoundSource.PLAYERS,
+                    0.8f,
+                    1.0f);
+        }
+        // Dye
+        else if (tag != null && tag.contains("color")) {
+            player.level().playSound(null,
+                    player.blockPosition(),
+                    SoundEvents.DYE_USE,
+                    SoundSource.PLAYERS,
+                    0.8f,
+                    1.0f);
+        }
+    }
 
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
@@ -116,7 +170,4 @@ public class InteractionHandler {
 
         BufferUploader.drawWithShader(bb.end());
     }
-
-
-    //todo: detect curios or armor head item method
 }

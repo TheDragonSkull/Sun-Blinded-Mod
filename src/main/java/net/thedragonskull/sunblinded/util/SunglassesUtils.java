@@ -10,6 +10,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.thedragonskull.sunblinded.item.ModItems;
 import net.thedragonskull.sunblinded.item.custom.Sunglasses;
+import top.theillusivec4.curios.api.CuriosApi;
 
 import javax.annotation.Nullable;
 
@@ -23,6 +24,17 @@ public class SunglassesUtils {
     public static ItemStack getEquippedSunglasses(Player player) {
         ItemStack stack = player.getItemBySlot(EquipmentSlot.HEAD);
         return stack.is(ModItems.SUNGLASSES.get()) ? stack : null;
+    }
+
+    public static boolean hasSunglassesInCurios(Player player) {
+        return CuriosApi.getCuriosInventory(player)
+                .map(inv -> inv.findFirstCurio(ModItems.SUNGLASSES.get()).isPresent())
+                .orElse(false);
+    }
+
+    public static boolean isWearingSunglasses(Player player) {
+        return player.getItemBySlot(EquipmentSlot.HEAD).is(ModItems.SUNGLASSES.get())
+                || hasSunglassesInCurios(player);
     }
 
     /**
@@ -69,6 +81,7 @@ public class SunglassesUtils {
     public static float sunglassesModel(String color) {
         return switch (color) {
             case "orange" -> 1.0F;
+            case "red" -> 2.0F;
             default -> 0.0F;
         };
     }

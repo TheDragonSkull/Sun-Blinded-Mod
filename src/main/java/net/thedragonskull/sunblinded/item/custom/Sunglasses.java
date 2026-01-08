@@ -6,6 +6,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
@@ -14,9 +15,14 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.DispenserBlock;
+import net.thedragonskull.sunblinded.item.ModItems;
 import net.thedragonskull.sunblinded.util.SunglassesUtils;
+import top.theillusivec4.curios.api.SlotContext;
+import top.theillusivec4.curios.api.type.capability.ICurioItem;
 
-public class Sunglasses extends Item implements Equipable {
+import static net.thedragonskull.sunblinded.util.SunglassesUtils.hasSunglassesInCurios;
+
+public class Sunglasses extends Item implements Equipable, ICurioItem {
 
     public Sunglasses(Properties pProperties) {
         super(pProperties);
@@ -37,6 +43,7 @@ public class Sunglasses extends Item implements Equipable {
 
         ChatFormatting formatting = switch (color) {
             case "orange" -> ChatFormatting.GOLD;
+            case "red" -> ChatFormatting.RED;
             default -> ChatFormatting.WHITE;
         };
 
@@ -45,6 +52,25 @@ public class Sunglasses extends Item implements Equipable {
                 "item.sunblinded.sunglasses.colored",
                 Component.translatable(colorKey).withStyle(formatting)
         );
+    }
+
+    @Override
+    public boolean canEquip(ItemStack stack, EquipmentSlot slot, Entity entity) {
+        if (!(entity instanceof Player player)) return true;
+
+        if (slot == EquipmentSlot.HEAD) {
+            return !hasSunglassesInCurios(player);
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean canEquipFromUse(SlotContext context, ItemStack stack) {
+        Player player = (Player) context.entity();
+
+        return !player.getItemBySlot(EquipmentSlot.HEAD)
+                .is(ModItems.SUNGLASSES.get());
     }
 
     @Override

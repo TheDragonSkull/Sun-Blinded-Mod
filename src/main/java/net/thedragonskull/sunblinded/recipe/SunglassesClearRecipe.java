@@ -12,7 +12,7 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
 import net.thedragonskull.sunblinded.item.ModItems;
 
-public class SunglassesClearRecipe extends CustomRecipe { //TODO sound?
+public class SunglassesClearRecipe extends CustomRecipe {
 
     public SunglassesClearRecipe(ResourceLocation pId, CraftingBookCategory pCategory) {
         super(pId, pCategory);
@@ -67,7 +67,6 @@ public class SunglassesClearRecipe extends CustomRecipe { //TODO sound?
         result.setCount(1);
 
         result.removeTagKey("color");
-
 
         return result;
     }

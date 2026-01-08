@@ -53,7 +53,7 @@ public class ClientEvents {
         return switch (glassColor) {
             case "orange" -> 0x50402F00;
             case "blue"   -> 0x50003CFF;
-            case "red"    -> 0x50FF0000;
+            case "red"    -> 0x20FF0000;
             default       -> 0x50101025;
         };
     }
