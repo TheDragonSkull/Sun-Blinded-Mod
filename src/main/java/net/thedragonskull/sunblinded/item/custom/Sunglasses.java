@@ -2,6 +2,7 @@ package net.thedragonskull.sunblinded.item.custom;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextColor;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
@@ -9,17 +10,21 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.Equipable;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.thedragonskull.sunblinded.item.ModItems;
 import net.thedragonskull.sunblinded.util.SunglassesUtils;
+import org.jetbrains.annotations.NotNull;
 import top.theillusivec4.curios.api.SlotContext;
+import top.theillusivec4.curios.api.type.capability.ICurio;
 import top.theillusivec4.curios.api.type.capability.ICurioItem;
 
+import javax.annotation.Nullable;
+
+import java.util.List;
+
+import static net.thedragonskull.sunblinded.util.SunglassesUtils.getColor;
 import static net.thedragonskull.sunblinded.util.SunglassesUtils.hasSunglassesInCurios;
 
 public class Sunglasses extends Item implements Equipable, ICurioItem {
@@ -41,21 +46,19 @@ public class Sunglasses extends Item implements Equipable, ICurioItem {
             return super.getName(stack);
         }
 
-        ChatFormatting formatting = switch (color) {
-            case "orange" -> ChatFormatting.GOLD;
-            case "red" -> ChatFormatting.RED;
-            default -> ChatFormatting.WHITE;
-        };
+        int rgb = SunglassesUtils.getTextColor(color);
 
-        String colorKey = "color.sunblinded." + color;
+        Component colorName = Component.translatable("color.sunblinded." + color)
+                .withStyle(style -> style.withColor(TextColor.fromRgb(rgb)));
+
         return Component.translatable(
                 "item.sunblinded.sunglasses.colored",
-                Component.translatable(colorKey).withStyle(formatting)
+                colorName
         );
     }
 
     @Override
-    public boolean canEquip(ItemStack stack, EquipmentSlot slot, Entity entity) {
+    public boolean canEquip(ItemStack stack, EquipmentSlot slot, Entity entity) { //TODO: no funciona
         if (!(entity instanceof Player player)) return true;
 
         if (slot == EquipmentSlot.HEAD) {
@@ -81,5 +84,16 @@ public class Sunglasses extends Item implements Equipable, ICurioItem {
     @Override
     public SoundEvent getEquipSound() {
         return SoundEvents.CHICKEN_STEP;
+    }
+
+    @Override
+    public @NotNull ICurio.SoundInfo getEquipSound(SlotContext slotContext, ItemStack stack) {
+        return new ICurio.SoundInfo(SoundEvents.CHICKEN_STEP, 1.0F, 1.0F);
+    }
+
+    @Override
+    public List<Component> getSlotsTooltip(List<Component> tooltips, ItemStack stack) {
+        tooltips.clear();
+        return tooltips;
     }
 }

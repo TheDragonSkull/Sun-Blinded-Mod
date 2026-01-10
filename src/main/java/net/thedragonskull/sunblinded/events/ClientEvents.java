@@ -50,13 +50,29 @@ public class ClientEvents {
             return 0x50101025;
         }
 
-        return switch (glassColor) {
-            case "orange" -> 0x50402F00;
-            case "blue"   -> 0x50003CFF;
-            case "red"    -> 0x20FF0000;
-            default       -> 0x50101025;
-        };
+/*        return switch (glassColor) {
+            case "white"       -> 0x20FFFFFF;
+            case "orange"      -> 0x309e6c00;
+            case "magenta"     -> 0x30a61ea6;
+            case "light_blue"  -> 0x304b98bf;
+            case "yellow"      -> 0x30a1a140;
+            case "lime"        -> 0x256d9e3c;
+            case "pink"        -> 0x30b3698e;
+            case "gray"        -> 0x50545454;
+            case "light_gray"  -> 0x40858585;
+            case "cyan"        -> 0x3020a8a8;
+            case "purple"      -> 0x305000bf;
+            case "blue"        -> 0x401a2d78;
+            case "brown"       -> 0x50402F00;
+            case "green"       -> 0x35326332;
+            case "red"         -> 0x20FF0000;
+            case "black"       -> 0x50000000;
+            default            -> 0x50101025;
+        };*/
+
+        return SunglassesUtils.getOverlayColor(glassColor);
     }
+
 
 
     @SubscribeEvent

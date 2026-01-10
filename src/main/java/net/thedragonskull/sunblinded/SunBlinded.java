@@ -11,6 +11,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.thedragonskull.sunblinded.item.ModCreativeModeTab;
 import net.thedragonskull.sunblinded.item.ModItems;
 import net.thedragonskull.sunblinded.recipe.ModRecipes;
 import net.thedragonskull.sunblinded.util.ModItemProperties;
@@ -30,6 +31,7 @@ public class SunBlinded {
 
         ModItems.register(modEventBus);
         ModRecipes.register(modEventBus);
+        ModCreativeModeTab.register(modEventBus);
 
         modEventBus.addListener(this::addCreative);
     }

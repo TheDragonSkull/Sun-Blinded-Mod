@@ -2,7 +2,8 @@
 	"format_version": "1.9.0",
 	"credit": "Made with Blockbench",
 	"textures": {
-		"1": "sunblinded:item/sunglasses"
+		"1": "sunblinded:item/light_gray_sunglasses",
+		"particle": "sunblinded:item/light_gray_sunglasses"
 	},
 	"elements": [
 		{
@@ -44,7 +45,7 @@
 		{
 			"from": [8.5, 26.25, 3.5],
 			"to": [9, 28.75, 4],
-			"rotation": {"angle": 0, "axis": "z", "origin": [8, 27.5, 6.4641]},
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 27.5, 6.4641]},
 			"faces": {
 				"north": {"uv": [5, 3, 5.5, 5.5], "texture": "#1"},
 				"east": {"uv": [4, 5, 4.5, 7.5], "texture": "#1"},
@@ -57,7 +58,7 @@
 		{
 			"from": [11, 26.25, 3.5],
 			"to": [11.5, 28.75, 4],
-			"rotation": {"angle": 0, "axis": "z", "origin": [8, 27.5, 6.4641]},
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 27.5, 6.4641]},
 			"faces": {
 				"north": {"uv": [6, 6, 6.5, 8.5], "texture": "#1"},
 				"east": {"uv": [7, 3, 7.5, 5.5], "texture": "#1"},
@@ -70,7 +71,7 @@
 		{
 			"from": [11.5, 28.25, 3.5],
 			"to": [12.5, 28.75, 4],
-			"rotation": {"angle": 0, "axis": "z", "origin": [8, 27.5, 6.4641]},
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 27.5, 6.4641]},
 			"faces": {
 				"north": {"uv": [4, 3, 5, 3.5], "texture": "#1"},
 				"east": {"uv": [1, 13, 1.5, 13.5], "texture": "#1"},
@@ -83,7 +84,7 @@
 		{
 			"from": [12, 28.25, 4],
 			"to": [12.5, 28.75, 8.5],
-			"rotation": {"angle": 0, "axis": "z", "origin": [8, 27.5, 6.4641]},
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 27.5, 6.4641]},
 			"faces": {
 				"north": {"uv": [13, 2, 13.5, 2.5], "texture": "#1"},
 				"east": {"uv": [0, 4, 4.5, 4.5], "texture": "#1"},
@@ -109,7 +110,7 @@
 		{
 			"from": [3.5, 28.25, 3.5],
 			"to": [4.5, 28.75, 4],
-			"rotation": {"angle": 0, "axis": "z", "origin": [8, 27.5, 6.4641]},
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 27.5, 6.4641]},
 			"faces": {
 				"north": {"uv": [3, 12, 4, 12.5], "texture": "#1"},
 				"east": {"uv": [13, 4, 13.5, 4.5], "texture": "#1"},
@@ -122,7 +123,7 @@
 		{
 			"from": [3.5, 28.25, 4],
 			"to": [4, 28.75, 8.5],
-			"rotation": {"angle": 0, "axis": "z", "origin": [8, 27.5, 6.4641]},
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 27.5, 6.4641]},
 			"faces": {
 				"north": {"uv": [13, 5, 13.5, 5.5], "texture": "#1"},
 				"east": {"uv": [4, 1, 8.5, 1.5], "texture": "#1"},
@@ -184,7 +185,7 @@
 		{
 			"from": [4.5, 26.25, 3.5],
 			"to": [5, 28.75, 4],
-			"rotation": {"angle": 0, "axis": "z", "origin": [8, 27.5, 6.4641]},
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 27.5, 6.4641]},
 			"faces": {
 				"north": {"uv": [4, 8, 4.5, 10.5], "texture": "#1"},
 				"east": {"uv": [8, 6, 8.5, 8.5], "texture": "#1"},
@@ -197,7 +198,7 @@
 		{
 			"from": [7, 26.25, 3.5],
 			"to": [7.5, 28.75, 4],
-			"rotation": {"angle": 0, "axis": "z", "origin": [8, 27.5, 6.4641]},
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 27.5, 6.4641]},
 			"faces": {
 				"north": {"uv": [5, 9, 5.5, 11.5], "texture": "#1"},
 				"east": {"uv": [6, 9, 6.5, 11.5], "texture": "#1"},
@@ -251,8 +252,8 @@
 			"scale": [1.21, 1.21, 1.21]
 		},
 		"head": {
-          "translation": [0, -30, -0.75],
-          "scale": [1.5, 1.5, 1.5]
+			"translation": [0, -30, -0.75],
+			"scale": [1.5, 1.5, 1.5]
 		},
 		"fixed": {
 			"translation": [0, -30, 2.75],
@@ -275,11 +276,12 @@
 						2,
 						3,
 						4,
+						5,
 						{
 							"name": "arm",
 							"origin": [11.25, 27.5, 3.75],
 							"color": 0,
-							"children": [5, 6, 7]
+							"children": [6, 7, 8]
 						}
 					]
 				},
@@ -292,35 +294,18 @@
 							"name": "arm",
 							"origin": [11.25, 27.5, 3.75],
 							"color": 0,
-							"children": [8, 9, 10]
+							"children": [9, 10, 11]
 						},
-						11,
 						12,
 						13,
 						14,
-						15
+						15,
+						16,
+						17
 					]
 				},
-				16
+				18
 			]
 		}
-	],
-  "overrides": [
-    { "predicate": { "color": 0.0 }, "model": "sunblinded:item/white_sunglasses" },
-    { "predicate": { "color": 1.0 }, "model": "sunblinded:item/orange_sunglasses" },
-    { "predicate": { "color": 2.0 }, "model": "sunblinded:item/magenta_sunglasses" },
-    { "predicate": { "color": 3.0 }, "model": "sunblinded:item/light_blue_sunglasses" },
-    { "predicate": { "color": 4.0 }, "model": "sunblinded:item/yellow_sunglasses" },
-    { "predicate": { "color": 5.0 }, "model": "sunblinded:item/lime_sunglasses" },
-    { "predicate": { "color": 6.0 }, "model": "sunblinded:item/pink_sunglasses" },
-    { "predicate": { "color": 7.0 }, "model": "sunblinded:item/gray_sunglasses" },
-    { "predicate": { "color": 8.0 }, "model": "sunblinded:item/light_gray_sunglasses" },
-    { "predicate": { "color": 9.0 }, "model": "sunblinded:item/cyan_sunglasses" },
-    { "predicate": { "color": 10.0 }, "model": "sunblinded:item/purple_sunglasses" },
-    { "predicate": { "color": 11.0 }, "model": "sunblinded:item/blue_sunglasses" },
-    { "predicate": { "color": 12.0 }, "model": "sunblinded:item/brown_sunglasses" },
-    { "predicate": { "color": 13.0 }, "model": "sunblinded:item/green_sunglasses" },
-    { "predicate": { "color": 14.0 }, "model": "sunblinded:item/red_sunglasses" },
-    { "predicate": { "color": 15.0 }, "model": "sunblinded:item/black_sunglasses" }
-  ]
+	]
 }

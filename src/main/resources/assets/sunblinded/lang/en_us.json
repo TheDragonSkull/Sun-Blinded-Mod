@@ -2,6 +2,22 @@
   "item.sunblinded.sunglasses": "Classic Sunglasses",
   "item.sunblinded.sunglasses.colored": "%s Sunglasses",
 
+  "color.sunblinded.white": "White",
   "color.sunblinded.orange": "Orange",
-  "color.sunblinded.red": "Red"
+  "color.sunblinded.magenta": "Magenta",
+  "color.sunblinded.light_blue": "Light Blue",
+  "color.sunblinded.yellow": "Yellow",
+  "color.sunblinded.lime": "Lime",
+  "color.sunblinded.pink": "Pink",
+  "color.sunblinded.gray": "Gray",
+  "color.sunblinded.light_gray": "Light Gray",
+  "color.sunblinded.cyan": "Cyan",
+  "color.sunblinded.purple": "Purple",
+  "color.sunblinded.blue": "Blue",
+  "color.sunblinded.brown": "Brown",
+  "color.sunblinded.green": "Green",
+  "color.sunblinded.red": "Red",
+  "color.sunblinded.black": "Black",
+
+  "creativetab.sunglasses_tab": "Sun-Blinded"
 }

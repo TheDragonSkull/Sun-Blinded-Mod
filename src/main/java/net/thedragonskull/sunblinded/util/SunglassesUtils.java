@@ -13,6 +13,7 @@ import net.thedragonskull.sunblinded.item.custom.Sunglasses;
 import top.theillusivec4.curios.api.CuriosApi;
 
 import javax.annotation.Nullable;
+import java.util.Map;
 
 public class SunglassesUtils {
 
@@ -80,10 +81,70 @@ public class SunglassesUtils {
 
     public static float sunglassesModel(String color) {
         return switch (color) {
+            case "white" -> 0.0F;
             case "orange" -> 1.0F;
-            case "red" -> 2.0F;
-            default -> 0.0F;
+            case "magenta" -> 2.0F;
+            case "light_blue" -> 3.0F;
+            case "yellow" -> 4.0F;
+            case "lime" -> 5.0F;
+            case "pink" -> 6.0F;
+            case "gray" -> 7.0F;
+            case "light_gray" -> 8.0F;
+            case "cyan" -> 9.0F;
+            case "purple" -> 10.0F;
+            case "blue" -> 11.0F;
+            case "brown" -> 12.0F;
+            case "green" -> 13.0F;
+            case "red" -> 14.0F;
+            case "black" -> 15.0F;
+            default -> -1.0F;
         };
+    }
+
+    private static final Map<String, Integer> TEXT_COLORS = Map.ofEntries(
+            Map.entry("white",       0xFFFFFF),
+            Map.entry("orange",      0xFFB730),
+            Map.entry("magenta",     0xFF77FF),
+            Map.entry("light_blue",  0x66CCFF),
+            Map.entry("yellow",      0xFFFF55),
+            Map.entry("lime",        0x77FF55),
+            Map.entry("pink",        0xFF99CC),
+            Map.entry("gray",        0x666666),
+            Map.entry("light_gray",  0xa1a1a1),
+            Map.entry("cyan",        0x3020a8a8),
+            Map.entry("purple",      0xAA55FF),
+            Map.entry("blue",        0x5555FF),
+            Map.entry("brown",       0xAA7744),
+            Map.entry("green",       0x55AA55),
+            Map.entry("red",         0xFF5555),
+            Map.entry("black",       0x444444)
+    );
+
+    public static int getTextColor(String color) {
+        return TEXT_COLORS.getOrDefault(color, 0xFFFFFF);
+    }
+
+    private static final Map<String, Integer> OVERLAY_COLORS = Map.ofEntries(
+            Map.entry("white",       0x20FFFFFF),
+            Map.entry("orange",      0x309e6c00),
+            Map.entry("magenta",     0x30a61ea6),
+            Map.entry("light_blue",  0x304b98bf),
+            Map.entry("yellow",      0x30a1a140),
+            Map.entry("lime",        0x256d9e3c),
+            Map.entry("pink",        0x30b3698e),
+            Map.entry("gray",        0x50545454),
+            Map.entry("light_gray",  0x40858585),
+            Map.entry("cyan",        0x3020a8a8),
+            Map.entry("purple",      0x305000bf),
+            Map.entry("blue",        0x401a2d78),
+            Map.entry("brown",       0x50402F00),
+            Map.entry("green",       0x35326332),
+            Map.entry("red",         0x20FF0000),
+            Map.entry("black",       0x50000000)
+    );
+
+    public static int getOverlayColor(String color) {
+        return OVERLAY_COLORS.getOrDefault(color, 0x50101025);
     }
 
 }
