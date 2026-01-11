@@ -11,11 +11,15 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.registries.RegistryObject;
 import net.thedragonskull.sunblinded.item.ModCreativeModeTab;
 import net.thedragonskull.sunblinded.item.ModItems;
+import net.thedragonskull.sunblinded.item.custom.Sunglasses;
 import net.thedragonskull.sunblinded.recipe.ModRecipes;
+import net.thedragonskull.sunblinded.render.SunglassesRenderer;
 import net.thedragonskull.sunblinded.util.ModItemProperties;
 import org.slf4j.Logger;
+import top.theillusivec4.curios.api.client.CuriosRendererRegistry;
 
 @Mod(SunBlinded.MOD_ID)
 public class SunBlinded {
@@ -47,6 +51,11 @@ public class SunBlinded {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
             ModItemProperties.addCustomItemProperties();
+
+            event.enqueueWork(() -> ModItems.ITEMS.getEntries().stream()
+                    .map(RegistryObject::get)
+                    .filter(item -> item instanceof Sunglasses)
+                    .forEach(item -> CuriosRendererRegistry.register(item, SunglassesRenderer::new)));
         }
     }
 }

@@ -58,11 +58,11 @@ public class Sunglasses extends Item implements Equipable, ICurioItem {
     }
 
     @Override
-    public boolean canEquip(ItemStack stack, EquipmentSlot slot, Entity entity) { //TODO: no funciona
+    public boolean canEquip(ItemStack stack, EquipmentSlot slot, Entity entity) {
         if (!(entity instanceof Player player)) return true;
 
         if (slot == EquipmentSlot.HEAD) {
-            return !hasSunglassesInCurios(player);
+            return !SunglassesUtils.hasSunglassesInCurios(player);
         }
 
         return true;
@@ -84,6 +84,14 @@ public class Sunglasses extends Item implements Equipable, ICurioItem {
     @Override
     public SoundEvent getEquipSound() {
         return SoundEvents.CHICKEN_STEP;
+    }
+
+    // Curios
+    @Override
+    public boolean canEquip(SlotContext slotContext, ItemStack stack) {
+        if (!(slotContext.entity() instanceof Player player)) return true;
+
+        return !player.getItemBySlot(EquipmentSlot.HEAD).is(ModItems.SUNGLASSES.get());
     }
 
     @Override

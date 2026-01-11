@@ -8,23 +8,30 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.util.LazyOptional;
 import net.thedragonskull.sunblinded.item.ModItems;
-import net.thedragonskull.sunblinded.item.custom.Sunglasses;
 import top.theillusivec4.curios.api.CuriosApi;
+import top.theillusivec4.curios.api.SlotResult;
+import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
 
 import javax.annotation.Nullable;
 import java.util.Map;
 
 public class SunglassesUtils {
 
-    public static boolean hasSunglasses(Player player) {
-        return player.getItemBySlot(EquipmentSlot.HEAD).getItem() instanceof Sunglasses;
-    }
-
     @Nullable
     public static ItemStack getEquippedSunglasses(Player player) {
-        ItemStack stack = player.getItemBySlot(EquipmentSlot.HEAD);
-        return stack.is(ModItems.SUNGLASSES.get()) ? stack : null;
+        // 1. Head slot
+        ItemStack head = player.getItemBySlot(EquipmentSlot.HEAD);
+        if (head.is(ModItems.SUNGLASSES.get())) {
+            return head;
+        }
+
+        // 2. Curios slot
+        return CuriosApi.getCuriosInventory(player)
+                .resolve()
+                .flatMap(inv -> inv.findFirstCurio(ModItems.SUNGLASSES.get()).map(SlotResult::stack))
+                .orElse(null);
     }
 
     public static boolean hasSunglassesInCurios(Player player) {

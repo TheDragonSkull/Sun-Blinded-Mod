@@ -84,7 +84,7 @@ public class InteractionHandler {
 
         boolean lookingAtSun = SunglassesUtils.isLookingAtSun(player);
 
-        if (SunglassesUtils.hasSunglasses(player)) {
+        if (SunglassesUtils.getEquippedSunglasses(player) != null) {
 
             if (lookingAtSun && SunExposureClient.exposure > 0.15F) {
                 SunAfterimageClient.requestCapture(SunExposureClient.exposure);
