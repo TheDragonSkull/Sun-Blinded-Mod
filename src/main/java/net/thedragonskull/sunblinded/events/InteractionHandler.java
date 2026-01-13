@@ -23,6 +23,7 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.thedragonskull.sunblinded.SunBlinded;
+import net.thedragonskull.sunblinded.effect.ModEffects;
 import net.thedragonskull.sunblinded.item.ModItems;
 import net.thedragonskull.sunblinded.util.SunglassesUtils;
 import top.theillusivec4.curios.api.CuriosApi;
@@ -80,45 +81,67 @@ public class InteractionHandler {
 
         Player player = event.player;
         Level level = player.level();
-        if (!level.isClientSide) return;
 
-        boolean lookingAtSun = SunglassesUtils.isLookingAtSun(player);
+        boolean lookingAtSun = SunglassesUtils.isLookingAtSun(player) && !player.hasEffect(ModEffects.SUN_BLINDED_EFFECT.get());
 
-        if (SunglassesUtils.getEquippedSunglasses(player) != null) {
+        if (level.isClientSide) {
+            if (SunglassesUtils.getEquippedSunglasses(player) != null) {
 
-            if (lookingAtSun && SunExposureClient.exposure > 0.15F) {
+                if (lookingAtSun && SunExposureClient.exposure > 0.15F) {
+                    SunAfterimageClient.requestCapture(SunExposureClient.exposure);
+                }
+
+                SunExposureClient.exposure = 0f;
+            } else {
+                if (SunExposureClient.blindnessCooldown > 0) {
+                    SunExposureClient.blindnessCooldown--;
+                    return;
+                }
+
+                if (lookingAtSun) {
+                    SunExposureClient.exposure += 1f / (5f * 20f);
+                } else {
+                    SunExposureClient.exposure -= 1f / (5f * 20f);
+                }
+            }
+
+            SunExposureClient.exposure = Mth.clamp(
+                    SunExposureClient.exposure, 0f, 1f
+            );
+
+            if (SunAfterimageClient.wasLookingAtSun && !lookingAtSun && (SunExposureClient.exposure > 0.15F && SunExposureClient.exposure < 1.0F)) {
                 SunAfterimageClient.requestCapture(SunExposureClient.exposure);
             }
 
-            SunExposureClient.exposure = 0f;
+            SunAfterimageClient.wasLookingAtSun = lookingAtSun;
         } else {
-            if (SunExposureClient.blindnessCooldown > 0) {
-                SunExposureClient.blindnessCooldown--;
-                return;
+            if (SunExposureClient.exposure >= 1.0f) {
+
+                SunExposureClient.exposure = 0f;
+                SunExposureClient.blindnessCooldown = 100;
+
+                if (!player.hasEffect(ModEffects.SUN_BLINDED_EFFECT.get())) {
+
+                    player.addEffect(new MobEffectInstance(
+                            ModEffects.SUN_BLINDED_EFFECT.get(),
+                            -1,
+                            0,
+                            false,
+                            false,
+                            true
+                    ));
+
+                    player.addEffect(new MobEffectInstance(
+                            MobEffects.BLINDNESS,
+                            20,
+                            255,
+                            false,
+                            false,
+                            false
+                    ));
+                }
+
             }
-
-            if (lookingAtSun) {
-                SunExposureClient.exposure += 1f / (5f * 20f);
-            } else {
-                SunExposureClient.exposure -= 1f / (5f * 20f);
-            }
-        }
-
-        SunExposureClient.exposure = Mth.clamp(
-                SunExposureClient.exposure, 0f, 1f
-        );
-
-        if (SunAfterimageClient.wasLookingAtSun && !lookingAtSun
-                && SunExposureClient.exposure > 0.15F) {
-            SunAfterimageClient.requestCapture(SunExposureClient.exposure);
-        }
-
-        SunAfterimageClient.wasLookingAtSun = lookingAtSun;
-
-        if (SunExposureClient.exposure >= 1.0f) {
-            player.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 100)); //TODO: se queda perma
-            SunExposureClient.exposure = 0f;
-            SunExposureClient.blindnessCooldown = 100;
         }
 
     }
