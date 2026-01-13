@@ -1,23 +1,52 @@
 {
-    "targets": [
-        "swap"
-    ],
-    "passes": [
+  "targets": [
+    "swap",
+    "swap2",
+    "swap3",
+    "previous"
+  ],
+  "passes": [
+    {
+      "name": "outline_soft",
+      "intarget": "minecraft:main",
+      "outtarget": "swap"
+    },
+    {
+      "name": "deconverge",
+      "intarget": "swap",
+      "outtarget": "swap2"
+    },
+    {
+      "name": "blobs",
+      "intarget": "swap2",
+      "outtarget": "swap3"
+    },
+    {
+      "name": "phosphor",
+      "intarget": "swap3",
+      "outtarget": "swap",
+      "auxtargets": [
         {
-            "name": "invert",
-            "intarget": "minecraft:main",
-            "outtarget": "swap",
-            "uniforms": [
-                {
-                    "name": "InverseAmount",
-                    "values": [ 0.8 ]
-                }
-            ]
-        },
-        {
-            "name": "blit",
-            "intarget": "swap",
-            "outtarget": "minecraft:main"
+          "name": "PrevSampler",
+          "id": "previous"
         }
-    ]
+      ],
+      "uniforms": [
+        {
+          "name": "Phosphor",
+          "values": [0.95, 0.95, 0.95]
+        }
+      ]
+    },
+    {
+      "name": "blit",
+      "intarget": "swap",
+      "outtarget": "previous"
+    },
+    {
+      "name": "blit",
+      "intarget": "swap",
+      "outtarget": "minecraft:main"
+    }
+  ]
 }
