@@ -15,7 +15,7 @@ import net.thedragonskull.sunblinded.SunShaderRegistry;
 public class SunShaderCommand {
 
     @SubscribeEvent
-    public static void register(RegisterClientCommandsEvent event) {
+    public static void register(RegisterClientCommandsEvent event) { //todo: remove
 
         event.getDispatcher().register(
                 Commands.literal("sunshader")

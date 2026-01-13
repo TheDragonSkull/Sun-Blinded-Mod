@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class SunShaderRegistry {
 
-    public static final Map<String, ResourceLocation> SHADERS = new LinkedHashMap<>();
+    public static final Map<String, ResourceLocation> SHADERS = new LinkedHashMap<>(); //todo: remove
 
     static {
         // === VANILLA ===

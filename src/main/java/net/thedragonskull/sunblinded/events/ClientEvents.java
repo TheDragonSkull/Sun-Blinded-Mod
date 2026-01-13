@@ -12,6 +12,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RegisterClientCommandsEvent;
 import net.minecraftforge.client.event.RenderGuiEvent;
+import net.minecraftforge.client.event.ScreenEvent;
+import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -23,12 +25,12 @@ import net.thedragonskull.sunblinded.util.SunglassesUtils;
 public class ClientEvents {
 
     @SubscribeEvent
-    public static void onRenderGuiOverlay(RenderGuiEvent.Pre event) {
+    public static void onRenderGuiOverlay(RenderGuiEvent.Post event) {
         Minecraft mc = Minecraft.getInstance();
         Player player = mc.player;
         if (player == null) return;
 
-        if (!mc.options.getCameraType().isFirstPerson()) return;
+        //if (!mc.options.getCameraType().isFirstPerson()) return;
 
         ItemStack sunglasses = SunglassesUtils.getEquippedSunglasses(player);
         if (sunglasses == null) return;
@@ -42,8 +44,30 @@ public class ClientEvents {
         RenderSystem.disableDepthTest();
 
         int color = getOverlayColor(sunglasses);
+        guiGraphics.fill(0, 0, width, height, 1000, color);
 
-        guiGraphics.fill(0, 0, width, height, color);
+        RenderSystem.enableDepthTest();
+        RenderSystem.disableBlend();
+    }
+
+    @SubscribeEvent
+    public static void onScreenRender(ScreenEvent.Render.Post event) {
+        Minecraft mc = Minecraft.getInstance();
+        Player player = mc.player;
+        if (player == null) return;
+
+        ItemStack sunglasses = SunglassesUtils.getEquippedSunglasses(player);
+        if (sunglasses == null) return;
+
+        GuiGraphics gg = event.getGuiGraphics();
+        int w = event.getScreen().width;
+        int h = event.getScreen().height;
+
+        RenderSystem.enableBlend();
+        RenderSystem.defaultBlendFunc();
+        RenderSystem.disableDepthTest();
+
+        gg.fill(0, 0, w, h, 1000, getOverlayColor(sunglasses));
 
         RenderSystem.enableDepthTest();
         RenderSystem.disableBlend();
@@ -93,13 +117,12 @@ public class ClientEvents {
 
         if (player.hasEffect(ModEffects.SUN_BLINDED_EFFECT.get())) {
 
-            if (mc.options.getCameraType().isFirstPerson()) {
-                if (!SunBlindClient.blindShaderLoaded
-                        || mc.gameRenderer.currentEffect() == null) {
+            //No first person
+            if (!SunBlindClient.blindShaderLoaded
+                    || mc.gameRenderer.currentEffect() == null) {
 
-                    mc.gameRenderer.loadEffect(SUNBLIND_INVERT);
-                    SunBlindClient.blindShaderLoaded = true;
-                }
+                mc.gameRenderer.loadEffect(SUNBLIND_INVERT);
+                SunBlindClient.blindShaderLoaded = true;
             }
 
         } else {
