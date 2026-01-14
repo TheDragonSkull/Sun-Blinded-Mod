@@ -10,7 +10,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RegisterClientCommandsEvent;
+import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.client.event.RenderGuiEvent;
 import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
@@ -19,6 +21,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.thedragonskull.sunblinded.SunBlinded;
 import net.thedragonskull.sunblinded.effect.ModEffects;
+import net.thedragonskull.sunblinded.util.KeyBindings;
 import net.thedragonskull.sunblinded.util.SunglassesUtils;
 
 @Mod.EventBusSubscriber(modid = SunBlinded.MOD_ID, value = Dist.CLIENT)
@@ -34,6 +37,8 @@ public class ClientEvents {
 
         ItemStack sunglasses = SunglassesUtils.getEquippedSunglasses(player);
         if (sunglasses == null) return;
+
+        if (SunglassesUtils.areGlassesUp(sunglasses)) return;
 
         GuiGraphics guiGraphics = event.getGuiGraphics();
         int width = event.getWindow().getGuiScaledWidth();
@@ -58,6 +63,8 @@ public class ClientEvents {
 
         ItemStack sunglasses = SunglassesUtils.getEquippedSunglasses(player);
         if (sunglasses == null) return;
+
+        if (SunglassesUtils.areGlassesUp(sunglasses)) return;
 
         GuiGraphics gg = event.getGuiGraphics();
         int w = event.getScreen().width;
@@ -114,7 +121,6 @@ public class ClientEvents {
         Player player = mc.player;
         if (player == null) return;
 
-
         if (player.hasEffect(ModEffects.SUN_BLINDED_EFFECT.get())) {
 
             //No first person
@@ -126,15 +132,18 @@ public class ClientEvents {
             }
 
         } else {
-            SunAfterimageClient.captureIfRequested();
             SunAfterimageClient.tickFade();
+
+            ItemStack glasses = SunglassesUtils.getEquippedSunglasses(player);
+            if (glasses == null || SunglassesUtils.areGlassesUp(glasses)) {
+                SunAfterimageClient.captureIfRequested();
+            }
 
             if (SunBlindClient.blindShaderLoaded) {
                 mc.gameRenderer.shutdownEffect();
+                SunBlindClient.blindShaderLoaded = false;
             }
-            SunBlindClient.blindShaderLoaded = false;
         }
     }
-
 
 }

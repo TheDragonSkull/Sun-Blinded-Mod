@@ -13,6 +13,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
+import net.thedragonskull.sunblinded.util.SunglassesUtils;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.client.ICurioRenderer;
 
@@ -36,6 +37,11 @@ public class SunglassesRenderer implements ICurioRenderer {
         matrixStack.mulPose(Axis.YP.rotationDegrees(180.0F));
         matrixStack.scale(0.62F, 0.62F, 0.62F);
         matrixStack.translate(0, 0.4F, 0);
+
+        ItemStack glasses = SunglassesUtils.getEquippedSunglasses(player);
+        if (SunglassesUtils.areGlassesUp(glasses)) {
+            matrixStack.translate(0, -0.25F, 0.15F);
+        }
 
 
         Minecraft.getInstance().getItemRenderer().renderStatic(

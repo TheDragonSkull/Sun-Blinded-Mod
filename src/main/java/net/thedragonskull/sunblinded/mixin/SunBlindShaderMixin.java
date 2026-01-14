@@ -7,10 +7,12 @@ import net.minecraft.client.renderer.PostChain;
 import net.minecraft.client.renderer.PostPass;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.item.ItemStack;
 import net.thedragonskull.sunblinded.SunBlinded;
 import net.thedragonskull.sunblinded.effect.ModEffects;
 import net.thedragonskull.sunblinded.events.SunBlindClient;
 import net.thedragonskull.sunblinded.events.SunExposureClient;
+import net.thedragonskull.sunblinded.util.SunglassesUtils;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -26,9 +28,17 @@ public abstract class SunBlindShaderMixin {
     private void sunblinded$onRenderLevel(CallbackInfo ci) {
         Minecraft mc = Minecraft.getInstance();
         if (mc.player == null) return;
-        if (mc.player.hasEffect(ModEffects.SUN_BLINDED_EFFECT.get())) return;
 
         if (mc.player.hasEffect(ModEffects.SUN_BLINDED_EFFECT.get())) {
+            if (SunBlindClient.shaderLoaded) {
+                mc.gameRenderer.shutdownEffect();
+                SunBlindClient.shaderLoaded = false;
+            }
+            return;
+        }
+
+        ItemStack glasses = SunglassesUtils.getEquippedSunglasses(mc.player);
+        if (glasses != null && !SunglassesUtils.areGlassesUp(glasses)) {
             if (SunBlindClient.shaderLoaded) {
                 mc.gameRenderer.shutdownEffect();
                 SunBlindClient.shaderLoaded = false;

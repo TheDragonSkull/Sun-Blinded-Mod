@@ -21,5 +21,8 @@
 
   "creativetab.sunglasses_tab": "Sun-Blinded",
 
-  "effect.sunblinded.thedragon_sun_blinded": "Sun-Blinded"
+  "effect.sunblinded.thedragon_sun_blinded": "Sun-Blinded",
+
+  "key.category.sunblinded": "Sun-Blinded",
+  "key.category.sunblinded.toggle_glasses": "Toggle Sunglasses Up/Down"
 }

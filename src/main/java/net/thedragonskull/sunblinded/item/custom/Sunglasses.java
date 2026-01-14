@@ -1,6 +1,5 @@
 package net.thedragonskull.sunblinded.item.custom;
 
-import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextColor;
 import net.minecraft.sounds.SoundEvent;
@@ -10,7 +9,10 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.Equipable;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.thedragonskull.sunblinded.item.ModItems;
@@ -20,12 +22,7 @@ import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurio;
 import top.theillusivec4.curios.api.type.capability.ICurioItem;
 
-import javax.annotation.Nullable;
-
 import java.util.List;
-
-import static net.thedragonskull.sunblinded.util.SunglassesUtils.getColor;
-import static net.thedragonskull.sunblinded.util.SunglassesUtils.hasSunglassesInCurios;
 
 public class Sunglasses extends Item implements Equipable, ICurioItem {
 

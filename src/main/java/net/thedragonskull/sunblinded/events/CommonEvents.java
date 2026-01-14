@@ -11,25 +11,46 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.thedragonskull.sunblinded.SunBlinded;
 import net.thedragonskull.sunblinded.effect.ModEffects;
 import net.thedragonskull.sunblinded.item.ModItems;
+import net.thedragonskull.sunblinded.network.C2SToggleGlassesPacket;
+import net.thedragonskull.sunblinded.network.PacketHandler;
+import net.thedragonskull.sunblinded.util.KeyBindings;
 import net.thedragonskull.sunblinded.util.SunglassesUtils;
-import top.theillusivec4.curios.api.CuriosApi;
 
 @Mod.EventBusSubscriber(modid = SunBlinded.MOD_ID)
-public class InteractionHandler {
+public class CommonEvents {
+
+    @SubscribeEvent
+    public static void onInputKeyEvent(InputEvent.Key event) {
+        if (KeyBindings.INSTANCE.TOGGLE_GLASSES.consumeClick()) {
+            Player player = Minecraft.getInstance().player;
+            if (player != null) {
+                ItemStack glasses = SunglassesUtils.getEquippedSunglasses(player);
+                if (glasses != null) {
+
+                    boolean goingDown = SunglassesUtils.areGlassesUp(glasses);
+
+                    if (goingDown && SunglassesUtils.isLookingAtSun(player)) {
+                        SunAfterimageClient.requestCapture(SunExposureClient.exposure);
+                    }
+                }
+
+                PacketHandler.sendToServer(new C2SToggleGlassesPacket());
+            }
+        }
+    }
 
     @SubscribeEvent
     public static void onItemCrafted(PlayerEvent.ItemCraftedEvent event) {
@@ -82,15 +103,14 @@ public class InteractionHandler {
         Player player = event.player;
         Level level = player.level();
 
-        boolean lookingAtSun = SunglassesUtils.isLookingAtSun(player) && !player.hasEffect(ModEffects.SUN_BLINDED_EFFECT.get());
+        ItemStack glasses = SunglassesUtils.getEquippedSunglasses(player);
+
+        boolean glassesProtect = glasses != null && !SunglassesUtils.areGlassesUp(glasses);
+
+        boolean lookingAtSun = SunglassesUtils.isLookingAtSun(player) && !player.hasEffect(ModEffects.SUN_BLINDED_EFFECT.get()) && !glassesProtect;
 
         if (level.isClientSide) {
-            if (SunglassesUtils.getEquippedSunglasses(player) != null) {
-
-                if (lookingAtSun && SunExposureClient.exposure > 0.15F) {
-                    SunAfterimageClient.requestCapture(SunExposureClient.exposure);
-                }
-
+            if (glassesProtect) {
                 SunExposureClient.exposure = 0f;
             } else {
                 if (SunExposureClient.blindnessCooldown > 0) {

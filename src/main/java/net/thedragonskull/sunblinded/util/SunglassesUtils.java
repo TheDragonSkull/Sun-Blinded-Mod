@@ -16,6 +16,7 @@ import javax.annotation.Nullable;
 import java.util.Map;
 
 public class SunglassesUtils {
+    public static final String TAG_GLASSES_UP = "GlassesUp";
 
     @Nullable
     public static ItemStack getEquippedSunglasses(Player player) {
@@ -41,6 +42,15 @@ public class SunglassesUtils {
     public static boolean isWearingSunglasses(Player player) {
         return player.getItemBySlot(EquipmentSlot.HEAD).is(ModItems.SUNGLASSES.get())
                 || hasSunglassesInCurios(player);
+    }
+
+    public static boolean areGlassesUp(ItemStack stack) {
+        if (stack == null) return false;
+        return stack.getOrCreateTag().getBoolean(TAG_GLASSES_UP);
+    }
+
+    public static void setGlassesUp(ItemStack stack, boolean up) {
+        stack.getOrCreateTag().putBoolean(TAG_GLASSES_UP, up);
     }
 
     /**
