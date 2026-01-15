@@ -8,7 +8,6 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemDisplayContext;
@@ -40,7 +39,8 @@ public class SunglassesRenderer implements ICurioRenderer {
 
         ItemStack glasses = SunglassesUtils.getEquippedSunglasses(player);
         if (SunglassesUtils.areGlassesUp(glasses)) {
-            matrixStack.translate(0, -0.25F, 0.15F);
+            matrixStack.translate(0, 0.2F, 0F);
+            matrixStack.mulPose(Axis.XP.rotationDegrees(40.0F));
         }
 
 

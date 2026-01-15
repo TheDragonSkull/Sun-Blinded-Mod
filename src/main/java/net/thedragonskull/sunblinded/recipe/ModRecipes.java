@@ -1,30 +1,35 @@
 package net.thedragonskull.sunblinded.recipe;
 
-import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.SimpleCraftingRecipeSerializer;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.thedragonskull.sunblinded.SunBlinded;
 
 public class ModRecipes {
-    public static final DeferredRegister<RecipeSerializer<?>> RECIPES =
-            DeferredRegister.create(Registries.RECIPE_SERIALIZER, SunBlinded.MOD_ID);
+    public static final DeferredRegister<RecipeSerializer<?>> SERIALIZERS =
+            DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, SunBlinded.MOD_ID);
 
-    public static final RegistryObject<RecipeSerializer<?>> SUNGLASSES_DYE =
-            RECIPES.register(
+    public static final RegistryObject<RecipeSerializer<SunglassesDyeRecipe>> SUNGLASSES_DYE_SERIALIZER =
+            SERIALIZERS.register("sunglasses_dye", () -> SunglassesDyeRecipe.Serializer.INSTANCE);
+
+    public static final RegistryObject<RecipeSerializer<SunglassesClearRecipe>> SUNGLASSES_CLEAR_SERIALIZER =
+            SERIALIZERS.register("sunglasses_clear", () -> SunglassesClearRecipe.Serializer.INSTANCE);
+
+/*    public static final RegistryObject<RecipeSerializer<?>> SUNGLASSES_DYE =
+            SERIALIZERS.register(
                     "sunglasses_dye",
                     () -> new SimpleCraftingRecipeSerializer<>(SunglassesDyeRecipe::new)
             );
 
     public static final RegistryObject<RecipeSerializer<?>> SUNGLASSES_CLEAR =
-            RECIPES.register(
+            SERIALIZERS.register(
                     "sunglasses_clear",
                     () -> new SimpleCraftingRecipeSerializer<>(SunglassesClearRecipe::new)
-            );
+            );*/
 
     public static void register(IEventBus eventBus) {
-        RECIPES.register(eventBus);
+        SERIALIZERS.register(eventBus);
     }
 }

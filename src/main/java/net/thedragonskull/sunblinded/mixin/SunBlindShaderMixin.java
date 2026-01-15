@@ -5,13 +5,12 @@ import net.minecraft.client.renderer.EffectInstance;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.PostChain;
 import net.minecraft.client.renderer.PostPass;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
-import net.thedragonskull.sunblinded.SunBlinded;
+import net.thedragonskull.sunblinded.capabilitiy.PlayerSunBlindness;
+import net.thedragonskull.sunblinded.capabilitiy.PlayerSunBlindnessProvider;
 import net.thedragonskull.sunblinded.effect.ModEffects;
 import net.thedragonskull.sunblinded.events.SunBlindClient;
-import net.thedragonskull.sunblinded.events.SunExposureClient;
 import net.thedragonskull.sunblinded.util.SunglassesUtils;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -20,9 +19,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(LevelRenderer.class)
 public abstract class SunBlindShaderMixin {
-
-    private static final ResourceLocation SUNBLIND_EXPOSURE =
-            ResourceLocation.fromNamespaceAndPath(SunBlinded.MOD_ID, "shaders/post/sun_blind.json");
 
     @Inject(method = "renderLevel", at = @At("TAIL"))
     private void sunblinded$onRenderLevel(CallbackInfo ci) {
@@ -47,11 +43,14 @@ public abstract class SunBlindShaderMixin {
         }
 
         if (!SunBlindClient.shaderLoaded || mc.gameRenderer.currentEffect() == null) {
-            mc.gameRenderer.loadEffect(SUNBLIND_EXPOSURE);
+            mc.gameRenderer.loadEffect(SunglassesUtils.getSunBlindExposure());
             SunBlindClient.shaderLoaded = true;
         }
 
-        float exposure = SunExposureClient.exposure;
+        float exposure = mc.player
+                .getCapability(PlayerSunBlindnessProvider.SUN_BLINDNESS)
+                .map(PlayerSunBlindness::getExposure)
+                .orElse(0f);
 
         float eased = (float) Mth.smoothstep(exposure);
         float saturation = 1.0F + exposure * 20.5F;

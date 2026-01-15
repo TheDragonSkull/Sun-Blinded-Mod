@@ -6,51 +6,26 @@ import com.mojang.blaze3d.vertex.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.Mth;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
-import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
-import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
+import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.thedragonskull.sunblinded.SunBlinded;
-import net.thedragonskull.sunblinded.effect.ModEffects;
+import net.thedragonskull.sunblinded.capabilitiy.PlayerSunBlindness;
+import net.thedragonskull.sunblinded.capabilitiy.PlayerSunBlindnessProvider;
 import net.thedragonskull.sunblinded.item.ModItems;
-import net.thedragonskull.sunblinded.network.C2SToggleGlassesPacket;
-import net.thedragonskull.sunblinded.network.PacketHandler;
-import net.thedragonskull.sunblinded.util.KeyBindings;
-import net.thedragonskull.sunblinded.util.SunglassesUtils;
 
 @Mod.EventBusSubscriber(modid = SunBlinded.MOD_ID)
 public class CommonEvents {
-
-    @SubscribeEvent
-    public static void onInputKeyEvent(InputEvent.Key event) {
-        if (KeyBindings.INSTANCE.TOGGLE_GLASSES.consumeClick()) {
-            Player player = Minecraft.getInstance().player;
-            if (player != null) {
-                ItemStack glasses = SunglassesUtils.getEquippedSunglasses(player);
-                if (glasses != null) {
-
-                    boolean goingDown = SunglassesUtils.areGlassesUp(glasses);
-
-                    if (goingDown && SunglassesUtils.isLookingAtSun(player)) {
-                        SunAfterimageClient.requestCapture(SunExposureClient.exposure);
-                    }
-                }
-
-                PacketHandler.sendToServer(new C2SToggleGlassesPacket());
-            }
-        }
-    }
 
     @SubscribeEvent
     public static void onItemCrafted(PlayerEvent.ItemCraftedEvent event) {
@@ -97,7 +72,32 @@ public class CommonEvents {
     }
 
     @SubscribeEvent
-    public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
+    public static void onAttachCapabilitiesPlayer(AttachCapabilitiesEvent<Entity> event) {
+        if(event.getObject() instanceof Player) {
+            if(!event.getObject().getCapability(PlayerSunBlindnessProvider.SUN_BLINDNESS).isPresent()) {
+                event.addCapability(ResourceLocation.fromNamespaceAndPath(SunBlinded.MOD_ID, "properties"), new PlayerSunBlindnessProvider());
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onPlayerCloned(PlayerEvent.Clone event) {
+        if(event.isWasDeath()) {
+            event.getOriginal().getCapability(PlayerSunBlindnessProvider.SUN_BLINDNESS).ifPresent(oldStore -> {
+                event.getOriginal().getCapability(PlayerSunBlindnessProvider.SUN_BLINDNESS).ifPresent(newStore -> {
+                    newStore.copyFrom(oldStore);
+                });
+            });
+        }
+    }
+
+    @SubscribeEvent
+    public static void onRegisterCapabilities(RegisterCapabilitiesEvent event) {
+        event.register(PlayerSunBlindness.class);
+    }
+
+/*    @SubscribeEvent
+    public static void onPlayerTick(TickEvent.PlayerTickEvent event) { todo:remove
         if (event.phase != TickEvent.Phase.END) return;
 
         Player player = event.player;
@@ -164,7 +164,7 @@ public class CommonEvents {
             }
         }
 
-    }
+    }*/
 
     @SubscribeEvent
     public static void onRenderGui(RenderGuiOverlayEvent.Post event) {

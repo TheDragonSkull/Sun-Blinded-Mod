@@ -1,26 +1,25 @@
 package net.thedragonskull.sunblinded.events;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.brigadier.arguments.StringArgumentType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.commands.Commands;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.RegisterClientCommandsEvent;
-import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
+import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RenderGuiEvent;
 import net.minecraftforge.client.event.ScreenEvent;
-import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.thedragonskull.sunblinded.SunBlinded;
+import net.thedragonskull.sunblinded.capabilitiy.PlayerSunBlindnessProvider;
 import net.thedragonskull.sunblinded.effect.ModEffects;
+import net.thedragonskull.sunblinded.network.C2SSunBlindTriggerPacket;
+import net.thedragonskull.sunblinded.network.C2SToggleGlassesPacket;
+import net.thedragonskull.sunblinded.network.PacketHandler;
 import net.thedragonskull.sunblinded.util.KeyBindings;
 import net.thedragonskull.sunblinded.util.SunglassesUtils;
 
@@ -110,10 +109,114 @@ public class ClientEvents {
         return SunglassesUtils.getOverlayColor(glassColor);
     }
 
-    private static final ResourceLocation SUNBLIND_INVERT =
-            ResourceLocation.fromNamespaceAndPath(SunBlinded.MOD_ID, "shaders/post/sun_blind_invert.json");
+    @SubscribeEvent
+    public static void onClientTick(TickEvent.ClientTickEvent event) {
+        if (event.phase != TickEvent.Phase.END) return;
+
+        Minecraft mc = Minecraft.getInstance();
+        Player player = mc.player;
+        if (player == null) return;
+
+        boolean sunBlinded = player.hasEffect(ModEffects.SUN_BLINDED_EFFECT.get());
+
+        if (sunBlinded) {
+
+            if (!SunBlindClient.blindShaderLoaded || mc.gameRenderer.currentEffect() == null) {
+                mc.gameRenderer.loadEffect(SunglassesUtils.getSunblindInvert());
+                SunBlindClient.blindShaderLoaded = true;
+            }
+
+            SunAfterimageClient.reset();
+            return;
+        }
+
+        SunAfterimageClient.tickFade();
+
+        ItemStack glasses = SunglassesUtils.getEquippedSunglasses(player);
+        if (glasses == null || SunglassesUtils.areGlassesUp(glasses)) {
+            SunAfterimageClient.captureIfRequested();
+        }
+
+        if (SunBlindClient.blindShaderLoaded) {
+            mc.gameRenderer.shutdownEffect();
+            SunBlindClient.blindShaderLoaded = false;
+        }
+    }
 
     @SubscribeEvent
+    public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
+        if (event.phase != TickEvent.Phase.END) return;
+        if (!event.player.level().isClientSide) return;
+
+        Minecraft mc = Minecraft.getInstance();
+        if (event.player != mc.player) return;
+
+        Player player = event.player;
+
+        player.getCapability(PlayerSunBlindnessProvider.SUN_BLINDNESS).ifPresent(data -> {
+
+            if (player.hasEffect(ModEffects.SUN_BLINDED_EFFECT.get())) {
+                data.reset();
+                data.setCooldown(100);
+                return;
+            }
+
+            if (data.getCooldown() > 0) {
+                data.tickCooldown();
+                return;
+            }
+
+            ItemStack glasses = SunglassesUtils.getEquippedSunglasses(player);
+            boolean glassesProtect = glasses != null && !SunglassesUtils.areGlassesUp(glasses);
+            boolean lookingAtSun = SunglassesUtils.isLookingAtSun(player) && !glassesProtect;
+
+            float delta = 1f / (5f * 20f);
+
+            if (lookingAtSun) data.addExposure(delta);
+            else data.addExposure(-delta);
+
+            if (data.getExposure() >= 1.0f && !data.isBlindPacketSent()) {
+                data.setBlindPacketSent(true);
+                PacketHandler.sendToServer(new C2SSunBlindTriggerPacket());
+            }
+
+            if (data.wasLookingAtSun() && !lookingAtSun && data.getExposure() > 0.15f) {
+                SunAfterimageClient.requestCapture(data.getExposure());
+            }
+
+            if (data.getExposure() <= 0f) {
+                data.setBlindPacketSent(false);
+            }
+
+            data.setWasLookingAtSun(lookingAtSun);
+        });
+    }
+
+    @SubscribeEvent
+    public static void onInputKeyEvent(InputEvent.Key event) {
+        if (KeyBindings.INSTANCE.TOGGLE_GLASSES.consumeClick()) {
+            Player player = Minecraft.getInstance().player;
+            if (player != null) {
+                ItemStack glasses = SunglassesUtils.getEquippedSunglasses(player);
+                if (glasses != null) {
+                    player.getCapability(PlayerSunBlindnessProvider.SUN_BLINDNESS).ifPresent(data -> {
+
+                        boolean goingDown = SunglassesUtils.areGlassesUp(glasses);
+
+                        if (goingDown && SunglassesUtils.isLookingAtSun(player) && (data.getExposure() > 0.15F && data.getExposure() < 1.0F)) {
+                            SunAfterimageClient.requestCapture(data.getExposure());
+                            SunAfterimageClient.captureIfRequested();
+                        }
+                    });
+                }
+
+                PacketHandler.sendToServer(new C2SToggleGlassesPacket());
+            }
+        }
+    }
+
+    /*
+    @SubscribeEvent  TODO: remove
     public static void onClientTick(TickEvent.ClientTickEvent event) {
         if (event.phase != TickEvent.Phase.END) return;
 
@@ -127,7 +230,7 @@ public class ClientEvents {
             if (!SunBlindClient.blindShaderLoaded
                     || mc.gameRenderer.currentEffect() == null) {
 
-                mc.gameRenderer.loadEffect(SUNBLIND_INVERT);
+                mc.gameRenderer.loadEffect(SunglassesUtils.getSunblindInvert());
                 SunBlindClient.blindShaderLoaded = true;
             }
 
@@ -145,5 +248,80 @@ public class ClientEvents {
             }
         }
     }
+
+    @SubscribeEvent
+    public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
+        if (event.phase != TickEvent.Phase.END) return;
+
+        Player player = event.player;
+        if (!player.level().isClientSide) return;
+
+        if (player.hasEffect(ModEffects.SUN_BLINDED_EFFECT.get())) {
+            resetSunClientState();
+            return;
+        }
+
+        ItemStack glasses = SunglassesUtils.getEquippedSunglasses(player);
+        boolean glassesProtect = glasses != null && !SunglassesUtils.areGlassesUp(glasses);
+
+        boolean lookingAtSun =
+                SunglassesUtils.isLookingAtSun(player)
+                        && !player.hasEffect(ModEffects.SUN_BLINDED_EFFECT.get())
+                        && !glassesProtect;
+
+        if (glassesProtect) {
+            SunExposureClient.exposure = 0f;
+            return;
+        }
+
+        if (SunExposureClient.blindnessCooldown > 0) {
+            SunExposureClient.blindnessCooldown--;
+            return;
+        }
+
+        float delta = 1f / (5f * 20f);
+
+        if (lookingAtSun) {
+            SunExposureClient.exposure += delta;
+        } else {
+            SunExposureClient.exposure -= delta;
+        }
+
+        SunExposureClient.exposure = Mth.clamp(
+                SunExposureClient.exposure, 0f, 1f
+        );
+
+        if (SunExposureClient.exposure >= 1.0f && !SunExposureClient.sentBlindPacket) {
+            SunExposureClient.sentBlindPacket = true;
+            PacketHandler.sendToServer(new C2SSunBlindTriggerPacket());
+        }
+
+        if (SunAfterimageClient.wasLookingAtSun
+                && !lookingAtSun
+                && SunExposureClient.exposure > 0.15F) {
+            SunAfterimageClient.requestCapture(SunExposureClient.exposure);
+        }
+
+        if (SunExposureClient.exposure <= 0.0f) {
+            SunExposureClient.sentBlindPacket = false;
+        }
+
+        SunAfterimageClient.wasLookingAtSun = lookingAtSun;
+
+        if (!player.hasEffect(ModEffects.SUN_BLINDED_EFFECT.get())
+                && SunExposureClient.blindnessCooldown <= 0
+                && SunExposureClient.exposure <= 0f) {
+            SunExposureClient.sentBlindPacket = false;
+        }
+    }
+
+    private static void resetSunClientState() {
+        SunExposureClient.exposure = 0f;
+        SunExposureClient.blindnessCooldown = 100;
+        SunExposureClient.sentBlindPacket = true;
+
+        SunAfterimageClient.wasLookingAtSun = false;
+        SunAfterimageClient.reset();
+    }*/
 
 }

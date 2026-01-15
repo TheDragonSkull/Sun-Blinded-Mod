@@ -1,7 +1,9 @@
 package net.thedragonskull.sunblinded.recipe;
 
+import com.google.gson.JsonObject;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
@@ -10,7 +12,9 @@ import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
+import net.thedragonskull.sunblinded.SunBlinded;
 import net.thedragonskull.sunblinded.item.ModItems;
+import org.jetbrains.annotations.Nullable;
 
 public class SunglassesClearRecipe extends CustomRecipe {
 
@@ -92,7 +96,27 @@ public class SunglassesClearRecipe extends CustomRecipe {
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return null;
+        return Serializer.INSTANCE;
+    }
+
+    public static class Serializer implements RecipeSerializer<SunglassesClearRecipe> {
+        public static final SunglassesClearRecipe.Serializer INSTANCE = new SunglassesClearRecipe.Serializer();
+        public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(SunBlinded.MOD_ID, "sunglasses_clear");
+
+        @Override
+        public SunglassesClearRecipe fromJson(ResourceLocation pRecipeId, JsonObject pSerializedRecipe) {
+            return new SunglassesClearRecipe(pRecipeId, CraftingBookCategory.MISC);
+        }
+
+        @Override
+        public @Nullable SunglassesClearRecipe fromNetwork(ResourceLocation pRecipeId, FriendlyByteBuf pBuffer) {
+            return new SunglassesClearRecipe(pRecipeId, CraftingBookCategory.MISC);
+        }
+
+        @Override
+        public void toNetwork(FriendlyByteBuf pBuffer, SunglassesClearRecipe pRecipe) {
+
+        }
     }
 }
 

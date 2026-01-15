@@ -2,6 +2,6 @@
   "type": "sunblinded:sunglasses_dye",
   "ingredients": [
     { "item": "sunblinded:sunglasses" },
-    { "tag": "#forge:dyes" }
+    { "tag": "forge:dyes" }
   ]
 }

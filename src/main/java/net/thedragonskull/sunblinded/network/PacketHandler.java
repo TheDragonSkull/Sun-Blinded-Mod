@@ -24,6 +24,12 @@ public class PacketHandler {
                 .decoder(C2SToggleGlassesPacket::new)
                 .consumerMainThread(C2SToggleGlassesPacket::handle)
                 .add();
+
+        INSTANCE.messageBuilder(C2SSunBlindTriggerPacket.class, id++, NetworkDirection.PLAY_TO_SERVER)
+                .encoder(C2SSunBlindTriggerPacket::encode)
+                .decoder(C2SSunBlindTriggerPacket::new)
+                .consumerMainThread(C2SSunBlindTriggerPacket::handle)
+                .add();
     }
 
     public static void sendToServer(Object msg) {

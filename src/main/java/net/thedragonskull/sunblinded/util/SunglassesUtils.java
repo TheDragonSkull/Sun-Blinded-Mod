@@ -1,5 +1,6 @@
 package net.thedragonskull.sunblinded.util;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -8,6 +9,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.thedragonskull.sunblinded.SunBlinded;
 import net.thedragonskull.sunblinded.item.ModItems;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotResult;
@@ -162,4 +164,21 @@ public class SunglassesUtils {
         return OVERLAY_COLORS.getOrDefault(color, 0x50101025);
     }
 
+    private static ResourceLocation SUNBLIND_EXPOSURE;
+
+    public static ResourceLocation getSunBlindExposure() {
+        if (SUNBLIND_EXPOSURE == null) {
+            SUNBLIND_EXPOSURE = ResourceLocation.fromNamespaceAndPath(SunBlinded.MOD_ID, "shaders/post/sun_blind.json");
+        }
+        return SUNBLIND_EXPOSURE;
+    }
+
+    private static ResourceLocation SUNBLIND_INVERT;
+
+    public static ResourceLocation getSunblindInvert() {
+        if (SUNBLIND_INVERT == null) {
+            SUNBLIND_INVERT = ResourceLocation.fromNamespaceAndPath(SunBlinded.MOD_ID, "shaders/post/sun_blind_invert.json");
+        }
+        return SUNBLIND_INVERT;
+    }
 }
