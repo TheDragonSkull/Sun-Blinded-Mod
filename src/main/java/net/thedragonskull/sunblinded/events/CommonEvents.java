@@ -5,6 +5,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
@@ -13,6 +14,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
@@ -23,6 +25,7 @@ import net.thedragonskull.sunblinded.SunBlinded;
 import net.thedragonskull.sunblinded.capabilitiy.PlayerSunBlindness;
 import net.thedragonskull.sunblinded.capabilitiy.PlayerSunBlindnessProvider;
 import net.thedragonskull.sunblinded.item.ModItems;
+import net.thedragonskull.sunblinded.render.layer.SunBlindEyesLayer;
 
 @Mod.EventBusSubscriber(modid = SunBlinded.MOD_ID)
 public class CommonEvents {
@@ -95,76 +98,6 @@ public class CommonEvents {
     public static void onRegisterCapabilities(RegisterCapabilitiesEvent event) {
         event.register(PlayerSunBlindness.class);
     }
-
-/*    @SubscribeEvent
-    public static void onPlayerTick(TickEvent.PlayerTickEvent event) { todo:remove
-        if (event.phase != TickEvent.Phase.END) return;
-
-        Player player = event.player;
-        Level level = player.level();
-
-        ItemStack glasses = SunglassesUtils.getEquippedSunglasses(player);
-
-        boolean glassesProtect = glasses != null && !SunglassesUtils.areGlassesUp(glasses);
-
-        boolean lookingAtSun = SunglassesUtils.isLookingAtSun(player) && !player.hasEffect(ModEffects.SUN_BLINDED_EFFECT.get()) && !glassesProtect;
-
-        if (level.isClientSide) {
-            if (glassesProtect) {
-                SunExposureClient.exposure = 0f;
-            } else {
-                if (SunExposureClient.blindnessCooldown > 0) {
-                    SunExposureClient.blindnessCooldown--;
-                    return;
-                }
-
-                if (lookingAtSun) {
-                    SunExposureClient.exposure += 1f / (5f * 20f);
-                } else {
-                    SunExposureClient.exposure -= 1f / (5f * 20f);
-                }
-            }
-
-            SunExposureClient.exposure = Mth.clamp(
-                    SunExposureClient.exposure, 0f, 1f
-            );
-
-            if (SunAfterimageClient.wasLookingAtSun && !lookingAtSun && (SunExposureClient.exposure > 0.15F && SunExposureClient.exposure < 1.0F)) {
-                SunAfterimageClient.requestCapture(SunExposureClient.exposure);
-            }
-
-            SunAfterimageClient.wasLookingAtSun = lookingAtSun;
-        } else {
-            if (SunExposureClient.exposure >= 1.0f) {
-
-                SunExposureClient.exposure = 0f;
-                SunExposureClient.blindnessCooldown = 100;
-
-                if (!player.hasEffect(ModEffects.SUN_BLINDED_EFFECT.get())) {
-
-                    player.addEffect(new MobEffectInstance(
-                            ModEffects.SUN_BLINDED_EFFECT.get(),
-                            -1,
-                            0,
-                            false,
-                            false,
-                            true
-                    ));
-
-                    player.addEffect(new MobEffectInstance(
-                            MobEffects.BLINDNESS,
-                            20,
-                            255,
-                            false,
-                            false,
-                            false
-                    ));
-                }
-
-            }
-        }
-
-    }*/
 
     @SubscribeEvent
     public static void onRenderGui(RenderGuiOverlayEvent.Post event) {

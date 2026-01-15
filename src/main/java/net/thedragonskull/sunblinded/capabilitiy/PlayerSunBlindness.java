@@ -1,6 +1,5 @@
 package net.thedragonskull.sunblinded.capabilitiy;
 
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 
 public class PlayerSunBlindness {
