@@ -15,6 +15,8 @@ import net.thedragonskull.sunblinded.effect.ModEffects;
 import net.thedragonskull.sunblinded.item.ModCreativeModeTab;
 import net.thedragonskull.sunblinded.item.ModItems;
 import net.thedragonskull.sunblinded.item.custom.Sunglasses;
+import net.thedragonskull.sunblinded.loot.ModLootFunctions;
+import net.thedragonskull.sunblinded.loot.ModLootModifiers;
 import net.thedragonskull.sunblinded.network.PacketHandler;
 import net.thedragonskull.sunblinded.recipe.ModRecipes;
 import net.thedragonskull.sunblinded.render.SunglassesCurioRenderer;
@@ -38,6 +40,8 @@ public class SunBlinded {
         ModRecipes.register(modEventBus);
         ModCreativeModeTab.register(modEventBus);
         ModEffects.register(modEventBus);
+        ModLootModifiers.register(modEventBus);
+        ModLootFunctions.register(modEventBus);
 
         modEventBus.addListener(this::addCreative);
     }

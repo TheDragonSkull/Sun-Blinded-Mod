@@ -41,11 +41,6 @@ public class SunglassesUtils {
                 .orElse(false);
     }
 
-    public static boolean isWearingSunglasses(Player player) {
-        return player.getItemBySlot(EquipmentSlot.HEAD).is(ModItems.SUNGLASSES.get())
-                || hasSunglassesInCurios(player);
-    }
-
     public static boolean areGlassesUp(ItemStack stack) {
         if (stack == null) return false;
         return stack.getOrCreateTag().getBoolean(TAG_GLASSES_UP);

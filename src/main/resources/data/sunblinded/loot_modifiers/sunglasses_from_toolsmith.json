@@ -1,0 +1,16 @@
+{
+  "type": "sunblinded:add_item",
+  "conditions": [
+    {
+      "condition": "forge:loot_table_id",
+      "loot_table_id": "minecraft:chests/village/village_toolsmith"
+    }
+  ],
+  "item": "sunblinded:sunglasses",
+  "functions": [
+    {
+      "function": "sunblinded:set_random_color"
+    }
+  ],
+  "rolls": { "min": 0, "max": 2 }
+}
