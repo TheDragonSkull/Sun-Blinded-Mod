@@ -31,7 +31,7 @@ public class PlayerSunBlindnessProvider implements ICapabilityProvider, INBTSeri
         tag.putFloat("Exposure", instance.getExposure());
         tag.putInt("Cooldown", instance.getCooldown());
         tag.putBoolean("BlindPacketSent", instance.isBlindPacketSent());
-        tag.putBoolean("WasLookingAtSun", instance.wasLookingAtSun());
+        tag.putBoolean("WasLookingAtSun", instance.wasSunReachingEyes());
         return tag;
     }
 
@@ -40,6 +40,6 @@ public class PlayerSunBlindnessProvider implements ICapabilityProvider, INBTSeri
         instance.setExposure(tag.getFloat("Exposure"));
         instance.setCooldown(tag.getInt("Cooldown"));
         instance.setBlindPacketSent(tag.getBoolean("BlindPacketSent"));
-        instance.setWasLookingAtSun(tag.getBoolean("WasLookingAtSun"));
+        instance.setWasSunReachingEyes(tag.getBoolean("WasLookingAtSun"));
     }
 }

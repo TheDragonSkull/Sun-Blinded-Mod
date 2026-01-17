@@ -5,19 +5,19 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -25,10 +25,22 @@ import net.thedragonskull.sunblinded.SunBlinded;
 import net.thedragonskull.sunblinded.capabilitiy.PlayerSunBlindness;
 import net.thedragonskull.sunblinded.capabilitiy.PlayerSunBlindnessProvider;
 import net.thedragonskull.sunblinded.item.ModItems;
-import net.thedragonskull.sunblinded.render.layer.SunBlindEyesLayer;
+import net.thedragonskull.sunblinded.util.SunglassesUtils;
 
 @Mod.EventBusSubscriber(modid = SunBlinded.MOD_ID)
 public class CommonEvents {
+
+    @SubscribeEvent
+    public static void onEquipmentChange(LivingEquipmentChangeEvent event) {
+        if (!(event.getEntity() instanceof Player player)) return;
+
+        if (event.getSlot() == EquipmentSlot.HEAD) {
+            ItemStack to = event.getTo();
+            if (to.is(ModItems.SUNGLASSES.get())) {
+                SunglassesUtils.setGlassesUp(to, false);
+            }
+        }
+    }
 
     @SubscribeEvent
     public static void onItemCrafted(PlayerEvent.ItemCraftedEvent event) {

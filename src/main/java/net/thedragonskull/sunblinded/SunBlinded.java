@@ -1,9 +1,7 @@
 package net.thedragonskull.sunblinded;
 
 import com.mojang.logging.LogUtils;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -12,7 +10,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.thedragonskull.sunblinded.effect.ModEffects;
 import net.thedragonskull.sunblinded.item.ModCreativeModeTab;
@@ -20,7 +17,7 @@ import net.thedragonskull.sunblinded.item.ModItems;
 import net.thedragonskull.sunblinded.item.custom.Sunglasses;
 import net.thedragonskull.sunblinded.network.PacketHandler;
 import net.thedragonskull.sunblinded.recipe.ModRecipes;
-import net.thedragonskull.sunblinded.render.SunglassesRenderer;
+import net.thedragonskull.sunblinded.render.SunglassesCurioRenderer;
 import net.thedragonskull.sunblinded.util.ModItemProperties;
 import org.slf4j.Logger;
 import top.theillusivec4.curios.api.client.CuriosRendererRegistry;
@@ -62,7 +59,7 @@ public class SunBlinded {
             event.enqueueWork(() -> ModItems.ITEMS.getEntries().stream()
                     .map(RegistryObject::get)
                     .filter(item -> item instanceof Sunglasses)
-                    .forEach(item -> CuriosRendererRegistry.register(item, SunglassesRenderer::new)));
+                    .forEach(item -> CuriosRendererRegistry.register(item, SunglassesCurioRenderer::new)));
         }
     }
 }

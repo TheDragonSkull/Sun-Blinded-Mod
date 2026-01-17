@@ -6,7 +6,8 @@ public class PlayerSunBlindness {
     private float exposure = 0f;
     private int cooldown = 0;
     private boolean blindPacketSent = false;
-    private boolean wasLookingAtSun = false;
+
+    private boolean wasSunReachingEyes = false;
 
     public float getExposure() {
         return exposure;
@@ -40,25 +41,25 @@ public class PlayerSunBlindness {
         this.blindPacketSent = blindPacketSent;
     }
 
-    public boolean wasLookingAtSun() {
-        return wasLookingAtSun;
+    public boolean wasSunReachingEyes() {
+        return wasSunReachingEyes;
     }
 
-    public void setWasLookingAtSun(boolean wasLookingAtSun) {
-        this.wasLookingAtSun = wasLookingAtSun;
+    public void setWasSunReachingEyes(boolean b) {
+        wasSunReachingEyes = b;
     }
 
     public void reset() {
         exposure = 0f;
         cooldown = 0;
         blindPacketSent = false;
-        wasLookingAtSun = false;
+        wasSunReachingEyes = false;
     }
 
     public void copyFrom(PlayerSunBlindness source) {
         this.exposure = source.exposure;
         this.cooldown = source.cooldown;
         this.blindPacketSent = source.blindPacketSent;
-        this.wasLookingAtSun = source.wasLookingAtSun;
+        this.wasSunReachingEyes = source.wasSunReachingEyes;
     }
 }

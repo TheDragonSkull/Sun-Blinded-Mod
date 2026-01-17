@@ -65,6 +65,7 @@ public class ClientEvents {
 
         if (SunglassesUtils.areGlassesUp(sunglasses)) return;
 
+
         GuiGraphics gg = event.getGuiGraphics();
         int w = event.getScreen().width;
         int h = event.getScreen().height;
@@ -131,11 +132,7 @@ public class ClientEvents {
         }
 
         SunAfterimageClient.tickFade();
-
-        ItemStack glasses = SunglassesUtils.getEquippedSunglasses(player);
-        if (glasses == null || SunglassesUtils.areGlassesUp(glasses)) {
-            SunAfterimageClient.captureIfRequested();
-        }
+        SunAfterimageClient.captureIfRequested();
 
         if (SunBlindClient.blindShaderLoaded) {
             mc.gameRenderer.shutdownEffect();
@@ -168,27 +165,27 @@ public class ClientEvents {
 
             ItemStack glasses = SunglassesUtils.getEquippedSunglasses(player);
             boolean glassesProtect = glasses != null && !SunglassesUtils.areGlassesUp(glasses);
-            boolean lookingAtSun = SunglassesUtils.isLookingAtSun(player) && !glassesProtect;
+
+            boolean sunReachesEyes = SunglassesUtils.isLookingAtSun(player) && !glassesProtect;
 
             float delta = 1f / (5f * 20f);
-
-            if (lookingAtSun) data.addExposure(delta);
+            if (sunReachesEyes) data.addExposure(delta);
             else data.addExposure(-delta);
+
+            if (data.wasSunReachingEyes() && !sunReachesEyes && data.getExposure() > 0.05f) {
+                SunAfterimageClient.requestCapture(data.getExposure());
+            }
 
             if (data.getExposure() >= 1.0f && !data.isBlindPacketSent()) {
                 data.setBlindPacketSent(true);
                 PacketHandler.sendToServer(new C2SSunBlindTriggerPacket());
             }
 
-            if (data.wasLookingAtSun() && !lookingAtSun && data.getExposure() > 0.15f) {
-                SunAfterimageClient.requestCapture(data.getExposure());
-            }
-
             if (data.getExposure() <= 0f) {
                 data.setBlindPacketSent(false);
             }
 
-            data.setWasLookingAtSun(lookingAtSun);
+            data.setWasSunReachingEyes(sunReachesEyes);
         });
     }
 
@@ -208,9 +205,12 @@ public class ClientEvents {
                             SunAfterimageClient.captureIfRequested();
                         }
                     });
-                }
 
-                PacketHandler.sendToServer(new C2SToggleGlassesPacket());
+                    boolean hasSunglassesInCurios = SunglassesUtils.hasSunglassesInCurios(player);
+                    if (hasSunglassesInCurios) {
+                        PacketHandler.sendToServer(new C2SToggleGlassesPacket());
+                    }
+                }
             }
         }
     }
