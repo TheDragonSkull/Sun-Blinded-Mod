@@ -11,6 +11,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
@@ -20,6 +21,7 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.minecraftforge.event.entity.living.MobEffectEvent;
+import net.minecraftforge.event.entity.living.MobSpawnEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -139,6 +141,32 @@ public class CommonEvents {
 
         PacketHandler.sendToAllPlayer(new S2CBurningEyesSync(id, false));
     }
+
+    @SubscribeEvent
+    public static void onMobSpawn(MobSpawnEvent.FinalizeSpawn event) {
+        Mob mob = event.getEntity();
+
+        ItemStack glasses = new ItemStack(ModItems.SUNGLASSES.get());
+
+        EquipmentSlot slot = Mob.getEquipmentSlotForItem(glasses);
+        if (slot != EquipmentSlot.HEAD) return;
+
+        float chance = 0.005f;
+        if (mob.getRandom().nextFloat() > chance) return;
+
+        String[] colors = {
+                "white", "orange", "magenta", "light_blue", "yellow", "lime",
+                "pink", "gray", "light_gray", "cyan", "purple", "blue",
+                "brown", "green", "red", "black"
+        };
+        String color = colors[mob.getRandom().nextInt(colors.length)];
+        glasses.getOrCreateTag().putString("color", color);
+
+        mob.setItemSlot(EquipmentSlot.HEAD, glasses);
+
+        mob.setDropChance(EquipmentSlot.HEAD, 1);
+    }
+
 
     @SubscribeEvent
     public static void onRenderGui(RenderGuiOverlayEvent.Post event) {

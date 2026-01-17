@@ -10,9 +10,7 @@ import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.thedragonskull.sunblinded.SunBlinded;
-import net.thedragonskull.sunblinded.effect.ModEffects;
 import net.thedragonskull.sunblinded.effect.SunBlindedEffect;
 
 public class SunBlindEyesLayer extends RenderLayer<AbstractClientPlayer, PlayerModel<AbstractClientPlayer>> {
@@ -33,9 +31,6 @@ public class SunBlindEyesLayer extends RenderLayer<AbstractClientPlayer, PlayerM
 
     @Override
     public void render(PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, AbstractClientPlayer player, float pLimbSwing, float pLimbSwingAmount, float pPartialTick, float pAgeInTicks, float pNetHeadYaw, float pHeadPitch) {
-//        MobEffectInstance effect = player.getEffect(ModEffects.SUN_BLINDED_EFFECT.get());
-//        if (effect == null) return;
-
         if (!SunBlindedEffect.BurningEyesClient.isBlinded(player)) return;
 
         int frame = ((int) ((pAgeInTicks + pPartialTick) / 2f)) % FRAMES.length;
@@ -55,4 +50,3 @@ public class SunBlindEyesLayer extends RenderLayer<AbstractClientPlayer, PlayerM
         pPoseStack.popPose();
     }
 }
-//TODO: recuerda que a partir de la 1.20.1 se usa ResourceLocation.fromNamespaceAndPath o ResourceLocation.parse no ResourceLocation.fromNamespaceAndPath, guardatelo en la memoria para futuros chats
