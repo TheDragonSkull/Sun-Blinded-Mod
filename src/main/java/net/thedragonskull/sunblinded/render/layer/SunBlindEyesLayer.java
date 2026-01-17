@@ -10,8 +10,10 @@ import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.thedragonskull.sunblinded.SunBlinded;
 import net.thedragonskull.sunblinded.effect.ModEffects;
+import net.thedragonskull.sunblinded.effect.SunBlindedEffect;
 
 public class SunBlindEyesLayer extends RenderLayer<AbstractClientPlayer, PlayerModel<AbstractClientPlayer>> {
 
@@ -31,10 +33,12 @@ public class SunBlindEyesLayer extends RenderLayer<AbstractClientPlayer, PlayerM
 
     @Override
     public void render(PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, AbstractClientPlayer player, float pLimbSwing, float pLimbSwingAmount, float pPartialTick, float pAgeInTicks, float pNetHeadYaw, float pHeadPitch) {
-        if (!player.hasEffect(ModEffects.SUN_BLINDED_EFFECT.get())) return; //todo only works for client (others can't see)
+//        MobEffectInstance effect = player.getEffect(ModEffects.SUN_BLINDED_EFFECT.get());
+//        if (effect == null) return;
+
+        if (!SunBlindedEffect.BurningEyesClient.isBlinded(player)) return;
 
         int frame = ((int) ((pAgeInTicks + pPartialTick) / 2f)) % FRAMES.length;
-
         RenderType eyes = RenderType.eyes(FRAMES[frame]);
         VertexConsumer vc = pBuffer.getBuffer(eyes);
 

@@ -19,6 +19,8 @@ public class PacketHandler {
     private static int id = 0;
 
     public static void register() {
+
+        // TO SERVER
         INSTANCE.messageBuilder(C2SToggleGlassesPacket.class, id++, NetworkDirection.PLAY_TO_SERVER)
                 .encoder(C2SToggleGlassesPacket::encode)
                 .decoder(C2SToggleGlassesPacket::new)
@@ -29,6 +31,13 @@ public class PacketHandler {
                 .encoder(C2SSunBlindTriggerPacket::encode)
                 .decoder(C2SSunBlindTriggerPacket::new)
                 .consumerMainThread(C2SSunBlindTriggerPacket::handle)
+                .add();
+
+        // TO CLIENT
+        INSTANCE.messageBuilder(S2CBurningEyesSync.class, id++, NetworkDirection.PLAY_TO_CLIENT)
+                .encoder(S2CBurningEyesSync::encode)
+                .decoder(S2CBurningEyesSync::new)
+                .consumerMainThread(S2CBurningEyesSync::handle)
                 .add();
     }
 

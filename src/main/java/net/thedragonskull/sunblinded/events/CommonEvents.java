@@ -17,15 +17,22 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
+import net.minecraftforge.event.entity.living.MobEffectEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.thedragonskull.sunblinded.SunBlinded;
 import net.thedragonskull.sunblinded.capabilitiy.PlayerSunBlindness;
 import net.thedragonskull.sunblinded.capabilitiy.PlayerSunBlindnessProvider;
+import net.thedragonskull.sunblinded.effect.ModEffects;
 import net.thedragonskull.sunblinded.item.ModItems;
+import net.thedragonskull.sunblinded.network.PacketHandler;
+import net.thedragonskull.sunblinded.network.S2CBurningEyesSync;
 import net.thedragonskull.sunblinded.util.SunglassesUtils;
+
+import java.util.UUID;
 
 @Mod.EventBusSubscriber(modid = SunBlinded.MOD_ID)
 public class CommonEvents {
@@ -109,6 +116,28 @@ public class CommonEvents {
     @SubscribeEvent
     public static void onRegisterCapabilities(RegisterCapabilitiesEvent event) {
         event.register(PlayerSunBlindness.class);
+    }
+
+    @SubscribeEvent
+    public static void onPlayerDeath(LivingDeathEvent event) {
+        if (!(event.getEntity() instanceof Player player)) return;
+        if (player.level().isClientSide) return;
+        if (!player.hasEffect(ModEffects.SUN_BLINDED_EFFECT.get())) return;
+
+        UUID id = player.getUUID();
+
+        PacketHandler.sendToAllPlayer(new S2CBurningEyesSync(id, false));
+    }
+
+    @SubscribeEvent
+    public static void onRemoveEffect(MobEffectEvent.Remove event) {
+        if (!(event.getEntity() instanceof Player player)) return;
+        if (player.level().isClientSide) return;
+        if (event.getEffect() != ModEffects.SUN_BLINDED_EFFECT.get()) return;
+
+        UUID id = player.getUUID();
+
+        PacketHandler.sendToAllPlayer(new S2CBurningEyesSync(id, false));
     }
 
     @SubscribeEvent

@@ -14,14 +14,18 @@ import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.network.PacketDistributor;
 import net.thedragonskull.sunblinded.SunBlinded;
 import net.thedragonskull.sunblinded.capabilitiy.PlayerSunBlindnessProvider;
 import net.thedragonskull.sunblinded.effect.ModEffects;
 import net.thedragonskull.sunblinded.network.C2SSunBlindTriggerPacket;
 import net.thedragonskull.sunblinded.network.C2SToggleGlassesPacket;
 import net.thedragonskull.sunblinded.network.PacketHandler;
+import net.thedragonskull.sunblinded.network.S2CBurningEyesSync;
 import net.thedragonskull.sunblinded.util.KeyBindings;
 import net.thedragonskull.sunblinded.util.SunglassesUtils;
+
+import java.util.UUID;
 
 @Mod.EventBusSubscriber(modid = SunBlinded.MOD_ID, value = Dist.CLIENT)
 public class ClientEvents {
@@ -172,7 +176,7 @@ public class ClientEvents {
             if (sunReachesEyes) data.addExposure(delta);
             else data.addExposure(-delta);
 
-            if (data.wasSunReachingEyes() && !sunReachesEyes && data.getExposure() > 0.05f) {
+            if (data.wasSunReachingEyes() && !sunReachesEyes && data.getExposure() > 0.15f) {
                 SunAfterimageClient.requestCapture(data.getExposure());
             }
 

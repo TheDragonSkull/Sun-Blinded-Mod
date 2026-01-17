@@ -7,6 +7,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraftforge.network.NetworkEvent;
 import net.thedragonskull.sunblinded.effect.ModEffects;
 
+import java.util.UUID;
 import java.util.function.Supplier;
 
 public class C2SSunBlindTriggerPacket {
@@ -26,6 +27,8 @@ public class C2SSunBlindTriggerPacket {
 
             if (!player.hasEffect(ModEffects.SUN_BLINDED_EFFECT.get())) {
 
+                UUID id = player.getUUID();
+
                 player.addEffect(new MobEffectInstance(
                         ModEffects.SUN_BLINDED_EFFECT.get(),
                         -1,
@@ -43,6 +46,8 @@ public class C2SSunBlindTriggerPacket {
                         false,
                         false
                 ));
+
+                PacketHandler.sendToAllPlayer(new S2CBurningEyesSync(id, true));
             }
 
         });
