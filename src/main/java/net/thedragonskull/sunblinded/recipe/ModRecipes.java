@@ -17,18 +17,6 @@ public class ModRecipes {
     public static final RegistryObject<RecipeSerializer<SunglassesClearRecipe>> SUNGLASSES_CLEAR_SERIALIZER =
             SERIALIZERS.register("sunglasses_clear", () -> SunglassesClearRecipe.Serializer.INSTANCE);
 
-/*    public static final RegistryObject<RecipeSerializer<?>> SUNGLASSES_DYE =
-            SERIALIZERS.register(
-                    "sunglasses_dye",
-                    () -> new SimpleCraftingRecipeSerializer<>(SunglassesDyeRecipe::new)
-            );
-
-    public static final RegistryObject<RecipeSerializer<?>> SUNGLASSES_CLEAR =
-            SERIALIZERS.register(
-                    "sunglasses_clear",
-                    () -> new SimpleCraftingRecipeSerializer<>(SunglassesClearRecipe::new)
-            );*/
-
     public static void register(IEventBus eventBus) {
         SERIALIZERS.register(eventBus);
     }
