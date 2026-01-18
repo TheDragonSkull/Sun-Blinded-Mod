@@ -1,6 +1,5 @@
-<img width="2048" height="505" alt="sunblinded_mod_banner" src="https://github.com/user-attachments/assets/b7f21392-734e-48b8-a9e9-68df545136b7" />
 
-versions
+<img width="2148" height="605" alt="sunblinded_mod_banner_rounded" src="https://github.com/user-attachments/assets/1adbd226-3349-418e-ba30-d18a20be7505" />
 
 ---
 
