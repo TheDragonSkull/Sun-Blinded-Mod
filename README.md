@@ -12,3 +12,8 @@ Thankfully, not everything is doom and blindness; a pair of sunglasses might jus
 ---
 
 # ✨ Features
+- 😎 **Wearable Sunglasses** – Equip sunglasses in the helmet slot or Curios slot for flexible compatibility and added features.
+- 🌞 **Sun Exposure Effects** – Looking directly at the sun comes with visual consequences.
+- 👁️ **Immersive Visual Filters** – Custom screen effects simulate glare, exposure, blindness.
+- 🕶️ **Eye Protection System** – Sunglasses help negating the sun exposure, but at a cost...
+
