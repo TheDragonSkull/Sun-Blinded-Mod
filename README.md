@@ -22,5 +22,13 @@ If you find bugs please report so I can try to fix them.
 
 ---
 
-# 🛠 Crafting Recipe
+# 🛠 Recipes
 
+* ## Crafting
+<img width="1024" height="528" alt="sunglasses_recipe" src="https://github.com/user-attachments/assets/932f0979-5273-4ae2-9944-352ee078bcc6" />
+
+* ## Dyeing
+<img width="1024" height="528" alt="sunglasses_recipe" src="https://github.com/user-attachments/assets/932f0979-5273-4ae2-9944-352ee078bcc6" />
+
+* ## Clearing
+<img width="1024" height="528" alt="sunglasses_recipe" src="https://github.com/user-attachments/assets/932f0979-5273-4ae2-9944-352ee078bcc6" />
