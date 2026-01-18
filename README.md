@@ -25,10 +25,11 @@ If you find bugs please report so I can try to fix them.
 # 🛠 Recipes
 
 * ## Crafting
-<img width="1024" height="528" alt="sunglasses_recipe" src="https://github.com/user-attachments/assets/932f0979-5273-4ae2-9944-352ee078bcc6" />
+<img width="512" height="264" alt="sunglasses_recipe" src="https://github.com/user-attachments/assets/fae2e01b-3709-4c73-91cc-f0a93de88285" />
 
-* ## Dyeing
-<img width="1024" height="528" alt="sunglasses_recipe" src="https://github.com/user-attachments/assets/932f0979-5273-4ae2-9944-352ee078bcc6" />
+* ## Dyeing (Shapeless)
+<img width="512" height="264" alt="sunglasses_dyeing" src="https://github.com/user-attachments/assets/961fb901-81bf-44cd-8294-7d3dac8ebf97" />
 
-* ## Clearing
-<img width="1024" height="528" alt="sunglasses_recipe" src="https://github.com/user-attachments/assets/932f0979-5273-4ae2-9944-352ee078bcc6" />
+
+* ## Clearing (Shapeless)(returns bucket)
+<img width="512" height="264" alt="sunglasses_clearing" src="https://github.com/user-attachments/assets/bf5469c8-c2c7-4344-b1f0-8441593985dc" />
