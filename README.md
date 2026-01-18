@@ -17,3 +17,10 @@ Thankfully, not everything is doom and blindness; a pair of sunglasses might jus
 - 👁️ **Immersive Visual Filters** – Custom screen effects simulate glare, exposure, blindness.
 - 🕶️ **Eye Protection System** – Sunglasses help negating the sun exposure, but at a cost...
 
+This mod supports multiplayer.  
+If you find bugs please report so I can try to fix them.
+
+---
+
+# 🛠 Crafting Recipe
+
