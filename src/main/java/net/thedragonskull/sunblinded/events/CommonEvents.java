@@ -29,6 +29,7 @@ import net.thedragonskull.sunblinded.SunBlinded;
 import net.thedragonskull.sunblinded.capabilitiy.PlayerSunBlindness;
 import net.thedragonskull.sunblinded.capabilitiy.PlayerSunBlindnessProvider;
 import net.thedragonskull.sunblinded.effect.ModEffects;
+import net.thedragonskull.sunblinded.effect.SunBlindedEffect;
 import net.thedragonskull.sunblinded.item.ModItems;
 import net.thedragonskull.sunblinded.network.PacketHandler;
 import net.thedragonskull.sunblinded.network.S2CBurningEyesSync;
@@ -129,6 +130,25 @@ public class CommonEvents {
         UUID id = player.getUUID();
 
         PacketHandler.sendToAllPlayer(new S2CBurningEyesSync(id, false));
+    }
+
+    @SubscribeEvent
+    public static void onPlayerLogout(PlayerEvent.PlayerLoggedOutEvent event) {
+        if (event.getEntity().level().isClientSide) {
+            SunBlindedEffect.BurningEyesClient.removeBlinded(event.getEntity().getUUID());
+        }
+    }
+
+    @SubscribeEvent
+    public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
+        Player player = event.getEntity();
+
+        if (player.level().isClientSide) return;
+        if (!player.hasEffect(ModEffects.SUN_BLINDED_EFFECT.get())) return;
+
+        UUID id = player.getUUID();
+
+        PacketHandler.sendToAllPlayer(new S2CBurningEyesSync(id, true));
     }
 
     @SubscribeEvent

@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "S": {
+      "item": "minecraft:tinted_glass"
+    },
+    "X": {
+      "item": "minecraft:iron_nugget"
+    }
+  },
+  "pattern": [
+    "X X",
+    "X X",
+    "SXS"
+  ],
+  "result": {
+    "count": 1,
+    "item": "sunblinded:sunglasses"
+  },
+  "show_notification": true
+}

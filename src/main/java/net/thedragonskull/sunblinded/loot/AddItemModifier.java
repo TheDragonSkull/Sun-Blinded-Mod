@@ -14,10 +14,7 @@ import net.minecraftforge.common.loot.IGlobalLootModifier;
 import net.minecraftforge.common.loot.LootModifier;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.thedragonskull.sunblinded.item.ModItems;
-import org.jetbrains.annotations.NotNull;
 
-import java.rmi.registry.Registry;
-import java.util.Random;
 import java.util.function.Supplier;
 
 public class AddItemModifier extends LootModifier {
