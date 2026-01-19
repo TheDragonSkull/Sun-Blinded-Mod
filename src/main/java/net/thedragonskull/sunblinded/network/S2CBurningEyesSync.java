@@ -3,6 +3,7 @@ package net.thedragonskull.sunblinded.network;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
 import net.thedragonskull.sunblinded.effect.SunBlindedEffect;
+import net.thedragonskull.sunblinded.events.BurningEyesClient;
 
 import java.util.UUID;
 import java.util.function.Supplier;
@@ -29,9 +30,9 @@ public class S2CBurningEyesSync {
     public static void handle(S2CBurningEyesSync msg, Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
             if (msg.blinded) {
-                SunBlindedEffect.BurningEyesClient.addBlinded(msg.playerId);
+                BurningEyesClient.addBlinded(msg.playerId);
             } else {
-                SunBlindedEffect.BurningEyesClient.removeBlinded(msg.playerId);
+                BurningEyesClient.removeBlinded(msg.playerId);
             }
         });
 

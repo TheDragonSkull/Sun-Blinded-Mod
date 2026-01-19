@@ -8,6 +8,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RenderGuiEvent;
+import net.minecraftforge.client.event.RenderLevelStageEvent;
 import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -105,12 +106,14 @@ public class ClientEvents {
                 SunBlindClient.blindShaderLoaded = true;
             }
 
-            SunAfterimageClient.reset();
+            SunAfterimageClient.active = false;
+            SunAfterimageClient.fadeTicks = 0;
+            SunAfterimageClient.captureRequested = false;
             return;
         }
 
         SunAfterimageClient.tickFade();
-        SunAfterimageClient.captureIfRequested();
+        //SunAfterimageClient.captureIfRequested();
 
         if (SunBlindClient.blindShaderLoaded) {
             mc.gameRenderer.shutdownEffect();
@@ -180,7 +183,6 @@ public class ClientEvents {
 
                         if (goingDown && SunglassesUtils.isLookingAtSun(player) && (data.getExposure() > 0.15F && data.getExposure() < 1.0F)) {
                             SunAfterimageClient.requestCapture(data.getExposure());
-                            SunAfterimageClient.captureIfRequested();
                         }
                     });
 
@@ -192,5 +194,17 @@ public class ClientEvents {
             }
         }
     }
+
+    @SubscribeEvent
+    public static void onRenderLevel(RenderLevelStageEvent event) {
+        if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_LEVEL) return;
+
+        Minecraft mc = Minecraft.getInstance();
+        if (mc.level == null) return;
+        if (!RenderSystem.isOnRenderThread()) return;
+
+        SunAfterimageClient.captureIfRequested();
+    }
+
 
 }

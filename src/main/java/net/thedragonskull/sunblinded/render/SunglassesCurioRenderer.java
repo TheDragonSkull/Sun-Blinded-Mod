@@ -25,6 +25,11 @@ public class SunglassesCurioRenderer implements ICurioRenderer {
         if (!(living instanceof Player player)) return;
         if (player.isInvisible()) return;
 
+        Minecraft mc = Minecraft.getInstance();
+        if (mc.player == player && mc.options.getCameraType().isFirstPerson()) {
+            return;
+        }
+
         if (!(renderLayerParent.getModel() instanceof HumanoidModel<?> humanoid)) {
             return;
         }

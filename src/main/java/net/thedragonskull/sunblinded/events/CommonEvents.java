@@ -15,6 +15,7 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
@@ -135,7 +136,7 @@ public class CommonEvents {
     @SubscribeEvent
     public static void onPlayerLogout(PlayerEvent.PlayerLoggedOutEvent event) {
         if (event.getEntity().level().isClientSide) {
-            SunBlindedEffect.BurningEyesClient.removeBlinded(event.getEntity().getUUID());
+            BurningEyesClient.removeBlinded(event.getEntity().getUUID());
         }
     }
 
@@ -149,6 +150,14 @@ public class CommonEvents {
         UUID id = player.getUUID();
 
         PacketHandler.sendToAllPlayer(new S2CBurningEyesSync(id, true));
+    }
+
+    @SubscribeEvent
+    public static void onClientLogout(ClientPlayerNetworkEvent.LoggingOut event) {
+        if (SunAfterimageClient.snapshot != null) {
+            SunAfterimageClient.snapshot.destroyBuffers();
+            SunAfterimageClient.snapshot = null;
+        }
     }
 
     @SubscribeEvent

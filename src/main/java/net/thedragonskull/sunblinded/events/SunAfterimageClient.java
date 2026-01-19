@@ -12,7 +12,7 @@ public class SunAfterimageClient {
     public static TextureTarget snapshot;
     public static boolean active = false;
     public static boolean wasLookingAtSun = false;
-    private static boolean captureRequested = false;
+    public static boolean captureRequested = false;
 
     public static int fadeTicks = 0;
     public static final int MAX_FADE_TICKS = 100;
@@ -20,10 +20,10 @@ public class SunAfterimageClient {
     private static float requestedExposure;
 
     public static void requestCapture(float exposure) {
-        if (!active) {
-            captureRequested = true;
-            requestedExposure = exposure;
-        }
+        if (active || captureRequested) return;
+        if (Minecraft.getInstance().level == null) return;
+        captureRequested = true;
+        requestedExposure = exposure;
     }
 
     public static void captureIfRequested() {
@@ -35,12 +35,15 @@ public class SunAfterimageClient {
         int w = main.width;
         int h = main.height;
 
-        reset();
-
-        TextureTarget copy = new TextureTarget(w, h, true, Minecraft.ON_OSX);
+        if (snapshot == null || snapshot.width != w || snapshot.height != h) {
+            if (snapshot != null) {
+                snapshot.destroyBuffers();
+            }
+            snapshot = new TextureTarget(w, h, true, Minecraft.ON_OSX);
+        }
 
         GlStateManager._glBindFramebuffer(GL30.GL_READ_FRAMEBUFFER, main.frameBufferId);
-        GlStateManager._glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, copy.frameBufferId);
+        GlStateManager._glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, snapshot.frameBufferId);
 
         GlStateManager._glBlitFrameBuffer(
                 0, 0, w, h,
@@ -51,7 +54,6 @@ public class SunAfterimageClient {
 
         GlStateManager._glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
 
-        snapshot = copy;
         active = true;
 
         fadeTicks = Mth.clamp(
@@ -74,10 +76,6 @@ public class SunAfterimageClient {
     }
 
     public static void reset() {
-        if (snapshot != null) {
-            snapshot.destroyBuffers();
-            snapshot = null;
-        }
         active = false;
         fadeTicks = 0;
         captureRequested = false;
