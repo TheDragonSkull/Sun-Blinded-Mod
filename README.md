@@ -53,13 +53,13 @@ Sunglasses are a wearable and dyeable new item that protect the player’s eyes 
 
  # 🛠 Recipes
 
-* ## Crafting
+## Crafting
 <img width="512" height="264" alt="sunglasses_recipe" src="https://github.com/user-attachments/assets/fae2e01b-3709-4c73-91cc-f0a93de88285" />
 
-* ## Dyeing (Shapeless)
+## Dyeing (Shapeless)
 <img width="512" height="264" alt="sunglasses_dyeing" src="https://github.com/user-attachments/assets/961fb901-81bf-44cd-8294-7d3dac8ebf97" />
 
-* ## Clearing (Shapeless)(Returns Bucket)
+## Clearing (Shapeless)(Returns Bucket)
 <img width="512" height="264" alt="sunglasses_clearing" src="https://github.com/user-attachments/assets/bf5469c8-c2c7-4344-b1f0-8441593985dc" />
 
 ---
