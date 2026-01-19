@@ -22,19 +22,6 @@ If you find bugs please report so I can try to fix them.
 
 ---
 
-# 🛠 Recipes
-
-* ## Crafting
-<img width="512" height="264" alt="sunglasses_recipe" src="https://github.com/user-attachments/assets/fae2e01b-3709-4c73-91cc-f0a93de88285" />
-
-* ## Dyeing (Shapeless)
-<img width="512" height="264" alt="sunglasses_dyeing" src="https://github.com/user-attachments/assets/961fb901-81bf-44cd-8294-7d3dac8ebf97" />
-
-* ## Clearing (Shapeless)(Returns Bucket)
-<img width="512" height="264" alt="sunglasses_clearing" src="https://github.com/user-attachments/assets/bf5469c8-c2c7-4344-b1f0-8441593985dc" />
-
----
-
 # ⚙️ How it works
 
 ### Sun Exposure
@@ -58,6 +45,19 @@ Sunglasses are a wearable and dyeable new item that protect the player’s eyes 
  ![sunglasses](https://github.com/user-attachments/assets/f562c799-17e9-4fdc-9f77-6051593acd8d)
 
  ---
+
+ # 🛠 Recipes
+
+* ## Crafting
+<img width="512" height="264" alt="sunglasses_recipe" src="https://github.com/user-attachments/assets/fae2e01b-3709-4c73-91cc-f0a93de88285" />
+
+* ## Dyeing (Shapeless)
+<img width="512" height="264" alt="sunglasses_dyeing" src="https://github.com/user-attachments/assets/961fb901-81bf-44cd-8294-7d3dac8ebf97" />
+
+* ## Clearing (Shapeless)(Returns Bucket)
+<img width="512" height="264" alt="sunglasses_clearing" src="https://github.com/user-attachments/assets/bf5469c8-c2c7-4344-b1f0-8441593985dc" />
+
+---
 
  # 📦 Dependencies
 
