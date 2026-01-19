@@ -1,7 +1,6 @@
 package net.thedragonskull.sunblinded.compat;
 
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
 
 public class SunglassesClearJeiRecipe {
     private final ItemStack inputGlasses;

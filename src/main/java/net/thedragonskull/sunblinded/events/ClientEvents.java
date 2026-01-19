@@ -3,8 +3,6 @@ package net.thedragonskull.sunblinded.events;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
@@ -14,18 +12,14 @@ import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.network.PacketDistributor;
 import net.thedragonskull.sunblinded.SunBlinded;
 import net.thedragonskull.sunblinded.capabilitiy.PlayerSunBlindnessProvider;
 import net.thedragonskull.sunblinded.effect.ModEffects;
 import net.thedragonskull.sunblinded.network.C2SSunBlindTriggerPacket;
 import net.thedragonskull.sunblinded.network.C2SToggleGlassesPacket;
 import net.thedragonskull.sunblinded.network.PacketHandler;
-import net.thedragonskull.sunblinded.network.S2CBurningEyesSync;
 import net.thedragonskull.sunblinded.util.KeyBindings;
 import net.thedragonskull.sunblinded.util.SunglassesUtils;
-
-import java.util.UUID;
 
 @Mod.EventBusSubscriber(modid = SunBlinded.MOD_ID, value = Dist.CLIENT)
 public class ClientEvents {
@@ -90,26 +84,6 @@ public class ClientEvents {
         if (glassColor == null) {
             return 0x50101025;
         }
-
-/*        return switch (glassColor) {
-            case "white"       -> 0x20FFFFFF;
-            case "orange"      -> 0x309e6c00;
-            case "magenta"     -> 0x30a61ea6;
-            case "light_blue"  -> 0x304b98bf;
-            case "yellow"      -> 0x30a1a140;
-            case "lime"        -> 0x256d9e3c;
-            case "pink"        -> 0x30b3698e;
-            case "gray"        -> 0x50545454;
-            case "light_gray"  -> 0x40858585;
-            case "cyan"        -> 0x3020a8a8;
-            case "purple"      -> 0x305000bf;
-            case "blue"        -> 0x401a2d78;
-            case "brown"       -> 0x50402F00;
-            case "green"       -> 0x35326332;
-            case "red"         -> 0x20FF0000;
-            case "black"       -> 0x50000000;
-            default            -> 0x50101025;
-        };*/
 
         return SunglassesUtils.getOverlayColor(glassColor);
     }

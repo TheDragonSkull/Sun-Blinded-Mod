@@ -50,9 +50,6 @@ public class SunglassesUtils {
         stack.getOrCreateTag().putBoolean(TAG_GLASSES_UP, up);
     }
 
-    /**
-     * Returns true if player is looking at the sun (current tick).
-     */
     public static boolean isLookingAtSun(Player player) {
         Level level = player.level();
         if (!level.isClientSide) return false;

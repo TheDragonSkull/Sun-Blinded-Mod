@@ -1,17 +1,14 @@
 package net.thedragonskull.sunblinded.compat;
 
-import mezz.jei.api.constants.ModIds;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
-import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import mezz.jei.common.Internal;
-import mezz.jei.common.gui.JeiTooltip;
 import mezz.jei.library.gui.helpers.CraftingGridHelper;
 import mezz.jei.library.gui.recipes.ShapelessIcon;
 import net.minecraft.client.Minecraft;
@@ -19,7 +16,6 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.thedragonskull.sunblinded.SunBlinded;
 import net.thedragonskull.sunblinded.item.ModItems;
 
