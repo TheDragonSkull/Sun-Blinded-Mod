@@ -20,6 +20,9 @@ Thankfully, not everything is doom and blindness; a pair of sunglasses might jus
 This mod supports multiplayer.  
 If you find bugs please report so I can try to fix them.
 
+❗ IMPORTANT ❗
+This mod is NOT compatible with Optifine, use [Embeddium](https://modrinth.com/mod/embeddium/versions) and [Oculus](https://modrinth.com/mod/oculus/versions) instead.
+
 ---
 
 # ⚙️ How it works
