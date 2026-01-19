@@ -42,13 +42,28 @@ Looking at the sun for up to 5s builds up sun exposure, gradually triggering vis
 * Exposure: Staring at the sun increases exposure intensity over time, which slowly decreases once the player looks away.
 * Afterimage: If the player stares at the sun for more than 1 second, an afterimage is generated when they stop looking at it. Its duration and intensity depend on how long the sun was stared at.
 
+![exposure_gif](https://github.com/user-attachments/assets/541b459e-a104-4dac-8101-0a456fac2786)
+
 ### Sun Blindness
 Staring at the sun for a full 5 seconds applies the new Sun-Blinded effect, causing the screen to become blurry and decolored. This effect persists until the player dies or drinks milk.
+
+![effect](https://github.com/user-attachments/assets/50d3ba0d-8ccb-4cbd-b4a5-56bd3deea72c)
 
 ### Sunglasses
 Sunglasses are a wearable and dyeable new item that protect the player’s eyes from sun exposure and its effects, at the cost of a dark screen overlay that simulates the reduced brightness of real-life sunglasses.
 - Behavior
   * Can be equipped in the helmet helmet slot or in a Curios slot.
   * When equipped in a Curios slot, the sunglasses can be toggled up or down using a dedicated keybind. When toggled up, they behave as if they were not equipped.
+    
+ ![sunglasses](https://github.com/user-attachments/assets/f562c799-17e9-4fdc-9f77-6051593acd8d)
+
+ ---
+
+ # 📦 Dependencies
+
+ **Forge**
+
+- [Minecraft Forge](https://files.minecraftforge.net/net/minecraftforge/forge/)
+- [Curios API](https://modrinth.com/mod/curios/versions)
 
 
