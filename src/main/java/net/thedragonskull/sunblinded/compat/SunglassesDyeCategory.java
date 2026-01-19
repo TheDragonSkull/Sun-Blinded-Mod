@@ -26,7 +26,7 @@ import java.util.List;
 
 public class SunglassesDyeCategory implements IRecipeCategory<SunglassesDyeJeiRecipe> {
     public static final ResourceLocation UID =
-            ResourceLocation.fromNamespaceAndPath(SunBlinded.MOD_ID, "sunglasses_dye");
+            new ResourceLocation(SunBlinded.MOD_ID, "sunglasses_dye");
 
     public static final RecipeType<SunglassesDyeJeiRecipe> TYPE =
             new RecipeType<>(UID, SunglassesDyeJeiRecipe.class);

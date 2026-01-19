@@ -11,7 +11,7 @@ import net.thedragonskull.sunblinded.SunBlinded;
 public class PacketHandler {
     private static final String PROTOCOL_VERSION = "1";
     public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(
-            ResourceLocation.fromNamespaceAndPath(SunBlinded.MOD_ID, "main"),
+            new ResourceLocation(SunBlinded.MOD_ID, "main"),
             () -> PROTOCOL_VERSION,
             PROTOCOL_VERSION::equals,
             PROTOCOL_VERSION::equals);

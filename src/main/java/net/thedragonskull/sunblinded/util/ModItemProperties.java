@@ -12,7 +12,7 @@ public class ModItemProperties {
     }
 
     private static void sunglassesColor(Item item) {
-        ItemProperties.register(item, ResourceLocation.parse("color"), (itemStack, level, livingEntity, var) -> {
+        ItemProperties.register(item, new ResourceLocation("color"), (itemStack, level, livingEntity, var) -> {
 
             if (!itemStack.hasTag()) return -1.0F;
 

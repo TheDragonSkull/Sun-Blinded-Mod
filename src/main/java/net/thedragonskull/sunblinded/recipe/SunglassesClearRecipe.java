@@ -101,7 +101,7 @@ public class SunglassesClearRecipe extends CustomRecipe {
 
     public static class Serializer implements RecipeSerializer<SunglassesClearRecipe> {
         public static final SunglassesClearRecipe.Serializer INSTANCE = new SunglassesClearRecipe.Serializer();
-        public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(SunBlinded.MOD_ID, "sunglasses_clear");
+        public static final ResourceLocation ID = new ResourceLocation(SunBlinded.MOD_ID, "sunglasses_clear");
 
         @Override
         public SunglassesClearRecipe fromJson(ResourceLocation pRecipeId, JsonObject pSerializedRecipe) {

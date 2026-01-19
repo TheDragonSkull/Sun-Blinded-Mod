@@ -87,7 +87,7 @@ public class SunglassesDyeRecipe extends CustomRecipe {
 
     public static class Serializer implements RecipeSerializer<SunglassesDyeRecipe> {
         public static final Serializer INSTANCE = new Serializer();
-        public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(SunBlinded.MOD_ID, "sunglasses_dye");
+        public static final ResourceLocation ID = new ResourceLocation(SunBlinded.MOD_ID, "sunglasses_dye");
 
         @Override
         public SunglassesDyeRecipe fromJson(ResourceLocation pRecipeId, JsonObject pSerializedRecipe) {

@@ -160,7 +160,7 @@ public class SunglassesUtils {
 
     public static ResourceLocation getSunBlindExposure() {
         if (SUNBLIND_EXPOSURE == null) {
-            SUNBLIND_EXPOSURE = ResourceLocation.fromNamespaceAndPath(SunBlinded.MOD_ID, "shaders/post/sun_blind.json");
+            SUNBLIND_EXPOSURE = new ResourceLocation(SunBlinded.MOD_ID, "shaders/post/sun_blind.json");
         }
         return SUNBLIND_EXPOSURE;
     }
@@ -169,7 +169,7 @@ public class SunglassesUtils {
 
     public static ResourceLocation getSunblindInvert() {
         if (SUNBLIND_INVERT == null) {
-            SUNBLIND_INVERT = ResourceLocation.fromNamespaceAndPath(SunBlinded.MOD_ID, "shaders/post/sun_blind_invert.json");
+            SUNBLIND_INVERT = new ResourceLocation(SunBlinded.MOD_ID, "shaders/post/sun_blind_invert.json");
         }
         return SUNBLIND_INVERT;
     }

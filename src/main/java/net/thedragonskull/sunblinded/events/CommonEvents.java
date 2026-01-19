@@ -100,7 +100,7 @@ public class CommonEvents {
     public static void onAttachCapabilitiesPlayer(AttachCapabilitiesEvent<Entity> event) {
         if(event.getObject() instanceof Player) {
             if(!event.getObject().getCapability(PlayerSunBlindnessProvider.SUN_BLINDNESS).isPresent()) {
-                event.addCapability(ResourceLocation.fromNamespaceAndPath(SunBlinded.MOD_ID, "properties"), new PlayerSunBlindnessProvider());
+                event.addCapability(new ResourceLocation(SunBlinded.MOD_ID, "properties"), new PlayerSunBlindnessProvider());
             }
         }
     }

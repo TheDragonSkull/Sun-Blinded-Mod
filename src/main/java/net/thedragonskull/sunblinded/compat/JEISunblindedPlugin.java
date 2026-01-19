@@ -15,7 +15,7 @@ public class JEISunblindedPlugin implements IModPlugin {
 
     @Override
     public ResourceLocation getPluginUid() {
-        return ResourceLocation.fromNamespaceAndPath(SunBlinded.MOD_ID, "jei_plugin");
+        return new ResourceLocation(SunBlinded.MOD_ID, "jei_plugin");
     }
 
     @Override

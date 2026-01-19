@@ -16,13 +16,13 @@ import net.thedragonskull.sunblinded.effect.SunBlindedEffect;
 public class SunBlindEyesLayer extends RenderLayer<AbstractClientPlayer, PlayerModel<AbstractClientPlayer>> {
 
     private static final ResourceLocation[] FRAMES = new ResourceLocation[]{
-            ResourceLocation.fromNamespaceAndPath(SunBlinded.MOD_ID, "textures/entity/eyes/eyes_0.png"),
-            ResourceLocation.fromNamespaceAndPath(SunBlinded.MOD_ID, "textures/entity/eyes/eyes_1.png"),
-            ResourceLocation.fromNamespaceAndPath(SunBlinded.MOD_ID, "textures/entity/eyes/eyes_2.png"),
-            ResourceLocation.fromNamespaceAndPath(SunBlinded.MOD_ID, "textures/entity/eyes/eyes_3.png"),
-            ResourceLocation.fromNamespaceAndPath(SunBlinded.MOD_ID, "textures/entity/eyes/eyes_4.png"),
-            ResourceLocation.fromNamespaceAndPath(SunBlinded.MOD_ID, "textures/entity/eyes/eyes_5.png"),
-            ResourceLocation.fromNamespaceAndPath(SunBlinded.MOD_ID, "textures/entity/eyes/eyes_6.png")
+            new ResourceLocation(SunBlinded.MOD_ID, "textures/entity/eyes/eyes_0.png"),
+            new ResourceLocation(SunBlinded.MOD_ID, "textures/entity/eyes/eyes_1.png"),
+            new ResourceLocation(SunBlinded.MOD_ID, "textures/entity/eyes/eyes_2.png"),
+            new ResourceLocation(SunBlinded.MOD_ID, "textures/entity/eyes/eyes_3.png"),
+            new ResourceLocation(SunBlinded.MOD_ID, "textures/entity/eyes/eyes_4.png"),
+            new ResourceLocation(SunBlinded.MOD_ID, "textures/entity/eyes/eyes_5.png"),
+            new ResourceLocation(SunBlinded.MOD_ID, "textures/entity/eyes/eyes_6.png")
     };
 
     public SunBlindEyesLayer(RenderLayerParent<AbstractClientPlayer, PlayerModel<AbstractClientPlayer>> parent) {
