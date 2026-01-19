@@ -41,6 +41,7 @@ Sunglasses are a wearable and dyeable new item that protect the player’s eyes 
 - Behavior
   * Can be equipped in the helmet helmet slot or in a Curios slot.
   * When equipped in a Curios slot, the sunglasses can be toggled up or down using a dedicated keybind. When toggled up, they behave as if they were not equipped.
+  * Certain mobs can spawn wearing sunglasses (random color), making them immune to sunlight and causing them to drop the sunglasses upon death.
     
  ![sunglasses](https://github.com/user-attachments/assets/f562c799-17e9-4fdc-9f77-6051593acd8d)
 
