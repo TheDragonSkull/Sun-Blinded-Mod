@@ -30,9 +30,25 @@ If you find bugs please report so I can try to fix them.
 * ## Dyeing (Shapeless)
 <img width="512" height="264" alt="sunglasses_dyeing" src="https://github.com/user-attachments/assets/961fb901-81bf-44cd-8294-7d3dac8ebf97" />
 
-* ## Clearing (Shapeless)(returns bucket)
+* ## Clearing (Shapeless)(Returns Bucket)
 <img width="512" height="264" alt="sunglasses_clearing" src="https://github.com/user-attachments/assets/bf5469c8-c2c7-4344-b1f0-8441593985dc" />
 
 ---
 
 # ⚙️ How it works
+
+### Sun Exposure
+Looking at the sun for up to 5s builds up sun exposure, gradually triggering visual discomfort effects instead of instant penalties.
+* Exposure: Staring at the sun increases exposure intensity over time, which slowly decreases once the player looks away.
+* Afterimage: If the player stares at the sun for more than 1 second, an afterimage is generated when they stop looking at it. Its duration and intensity depend on how long the sun was stared at.
+
+### Sun Blindness
+Staring at the sun for a full 5 seconds applies the new Sun-Blinded effect, causing the screen to become blurry and decolored. This effect persists until the player dies or drinks milk.
+
+### Sunglasses
+Sunglasses are a wearable and dyeable new item that protect the player’s eyes from sun exposure and its effects, at the cost of a dark screen overlay that simulates the reduced brightness of real-life sunglasses.
+- Behavior
+  * Can be equipped in the helmet helmet slot or in a Curios slot.
+  * When equipped in a Curios slot, the sunglasses can be toggled up or down using a dedicated keybind. When toggled up, they behave as if they were not equipped.
+
+
