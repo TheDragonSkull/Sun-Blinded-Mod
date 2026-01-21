@@ -7,10 +7,12 @@ import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.RegistryObject;
+import net.thedragonskull.sunblinded.config.SunblindedCommonConfigs;
 import net.thedragonskull.sunblinded.effect.ModEffects;
 import net.thedragonskull.sunblinded.item.ModCreativeModeTab;
 import net.thedragonskull.sunblinded.item.ModItems;
@@ -44,6 +46,8 @@ public class SunBlinded {
         ModLootFunctions.register(modEventBus);
 
         modEventBus.addListener(this::addCreative);
+
+        FMLJavaModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, SunblindedCommonConfigs.SPEC, "sunblinded-common.toml");
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {

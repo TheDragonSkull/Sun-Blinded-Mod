@@ -10,6 +10,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.thedragonskull.sunblinded.SunBlinded;
+import net.thedragonskull.sunblinded.config.SunblindedCommonConfigs;
 import net.thedragonskull.sunblinded.item.ModItems;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotResult;
@@ -77,8 +78,9 @@ public class SunglassesUtils {
         ));
 
         boolean sunVisible = result.getType() == HitResult.Type.MISS;
+        double threshold = SunblindedCommonConfigs.SUN_LOOKING_RADIUS.get();
 
-        return level.isDay() && dot > 0.8 && sunVisible;
+        return level.isDay() && dot > threshold && sunVisible;
     }
 
     @Nullable

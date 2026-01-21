@@ -15,6 +15,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.thedragonskull.sunblinded.SunBlinded;
 import net.thedragonskull.sunblinded.capabilitiy.PlayerSunBlindnessProvider;
+import net.thedragonskull.sunblinded.config.SunblindedCommonConfigs;
 import net.thedragonskull.sunblinded.effect.ModEffects;
 import net.thedragonskull.sunblinded.network.C2SSunBlindTriggerPacket;
 import net.thedragonskull.sunblinded.network.C2SToggleGlassesPacket;
@@ -27,6 +28,8 @@ public class ClientEvents {
 
     @SubscribeEvent
     public static void onRenderGuiOverlay(RenderGuiEvent.Post event) {
+        if (!SunblindedCommonConfigs.ENABLE_SUNGLASSES_OVERLAY.get()) return;
+
         Minecraft mc = Minecraft.getInstance();
         Player player = mc.player;
         if (player == null) return;
@@ -55,6 +58,8 @@ public class ClientEvents {
 
     @SubscribeEvent
     public static void onScreenRender(ScreenEvent.Render.Post event) {
+        if (!SunblindedCommonConfigs.ENABLE_SUNGLASSES_OVERLAY.get()) return;
+
         Minecraft mc = Minecraft.getInstance();
         Player player = mc.player;
         if (player == null) return;
@@ -63,7 +68,6 @@ public class ClientEvents {
         if (sunglasses == null) return;
 
         if (SunglassesUtils.areGlassesUp(sunglasses)) return;
-
 
         GuiGraphics gg = event.getGuiGraphics();
         int w = event.getScreen().width;
