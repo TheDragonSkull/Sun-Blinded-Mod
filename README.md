@@ -21,6 +21,7 @@ Thankfully, not everything is doom and blindness; a pair of sunglasses might jus
 - 🌞 **Sun Exposure Effects** – Looking directly at the sun comes with visual consequences.
 - 👁️ **Immersive Visual Filters** – Custom screen effects simulate glare, exposure, blindness.
 - 🕶️ **Eye Protection System** – Sunglasses help negating the sun exposure, but at a cost...
+- ⚙️ **Configurable Settings** - Detection radius for the sun and toggle sunglasses overlay can be changed in the *sunblinded-common.toml* config file.
 
 This mod supports multiplayer.  
 If you find bugs please report so I can try to fix them.
@@ -33,7 +34,7 @@ This mod is NOT compatible with Optifine, use [Embeddium](https://modrinth.com/m
 # ⚙️ How it works
 
 ### Sun Exposure
-Looking at the sun for up to 5s builds up sun exposure, gradually triggering visual discomfort effects instead of instant penalties.
+Looking at the sun for up to 5s builds up sun exposure, gradually triggering visual discomfort effects instead of instant penalties. **[Detection radius be changed in the config file]**
 * Exposure: Staring at the sun increases exposure intensity over time, which slowly decreases once the player looks away.
 * Afterimage: If the player stares at the sun for more than 1 second, an afterimage is generated when they stop looking at it. Its duration and intensity depend on how long the sun was stared at.
 
@@ -45,7 +46,7 @@ Staring at the sun for a full 5 seconds applies the new Sun-Blinded effect, caus
 ![effect](https://github.com/user-attachments/assets/50d3ba0d-8ccb-4cbd-b4a5-56bd3deea72c)
 
 ### Sunglasses
-Sunglasses are a wearable and dyeable new item that protect the player’s eyes from sun exposure and its effects, at the cost of a dark screen overlay that simulates the reduced brightness of real-life sunglasses.
+Sunglasses are a wearable and dyeable new item that protect the player’s eyes from sun exposure and its effects, at the cost of a dark screen overlay that simulates the reduced brightness of real-life sunglasses. **[Can be disabled in the config file]**
 - Behavior
   * Can be equipped in the helmet helmet slot or in a Curios slot.
   * When equipped in a Curios slot, the sunglasses can be toggled up or down using a dedicated keybind. When toggled up, they behave as if they were not equipped.
