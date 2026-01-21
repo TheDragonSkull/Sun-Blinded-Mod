@@ -1,5 +1,10 @@
 
 <img width="2148" height="605" alt="sunblinded_mod_banner_rounded" src="https://github.com/user-attachments/assets/1adbd226-3349-418e-ba30-d18a20be7505" />
+<br>
+<br>
+
+[![CurseForge Versions](https://cf.way2muchnoise.eu/versions/1437424.svg)](https://www.curseforge.com/minecraft/mc-mods/thedragons-mini-sun-blinded)
+[![CurseForge Downloads](https://cf.way2muchnoise.eu/short_1437424_downloads.svg)](https://www.curseforge.com/minecraft/mc-mods/thedragons-mini-sun-blinded)
 
 ---
 
