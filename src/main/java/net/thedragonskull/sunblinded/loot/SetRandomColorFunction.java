@@ -1,8 +1,8 @@
 package net.thedragonskull.sunblinded.loot;
 
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSerializationContext;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
@@ -10,22 +10,31 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.functions.LootItemConditionalFunction;
 import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+import net.thedragonskull.sunblinded.component.ModDataComponentTypes;
+
+import java.util.List;
 
 public class SetRandomColorFunction extends LootItemConditionalFunction {
 
-    protected SetRandomColorFunction(LootItemCondition[] pPredicates) {
-        super(pPredicates);
+    protected SetRandomColorFunction(List<LootItemCondition> predicates) {
+        super(predicates);
     }
+
+    public static final MapCodec<SetRandomColorFunction> CODEC =
+            RecordCodecBuilder.mapCodec(inst ->
+                    LootItemConditionalFunction.commonFields(inst)
+                    .apply(inst, SetRandomColorFunction::new)
+            );
 
     @Override
     protected ItemStack run(ItemStack stack, LootContext context) {
         int color = Mth.nextInt(context.getRandom(), 0, 15);
-        stack.getOrCreateTag().putFloat("color", color);
+        stack.set(ModDataComponentTypes.COLOR.get(), String.valueOf(color));
         return stack;
     }
 
     @Override
-    public LootItemFunctionType getType() {
+    public LootItemFunctionType<? extends LootItemConditionalFunction> getType() {
         return ModLootFunctions.SET_RANDOM_COLOR.get();
     }
 
@@ -41,20 +50,7 @@ public class SetRandomColorFunction extends LootItemConditionalFunction {
         };
 
         String color = colors[random.nextInt(colors.length)];
-        stack.getOrCreateTag().putString("color", color);
+        stack.set(ModDataComponentTypes.COLOR.get(), color);
         return stack;
-    }
-
-    public static class Serializer extends LootItemConditionalFunction.Serializer<SetRandomColorFunction> {
-
-        @Override
-        public void serialize(JsonObject json, SetRandomColorFunction value, JsonSerializationContext context) {
-            super.serialize(json, value, context);
-        }
-
-        @Override
-        public SetRandomColorFunction deserialize(JsonObject json, JsonDeserializationContext context, LootItemCondition[] conditions) {
-            return new SetRandomColorFunction(conditions);
-        }
     }
 }

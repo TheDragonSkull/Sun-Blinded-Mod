@@ -11,6 +11,8 @@ import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
+import net.thedragonskull.sunblinded.attachments.ModAttachments;
+import net.thedragonskull.sunblinded.component.ModDataComponentTypes;
 import net.thedragonskull.sunblinded.config.SunblindedCommonConfigs;
 import net.thedragonskull.sunblinded.effect.ModEffects;
 import net.thedragonskull.sunblinded.item.ModCreativeModeTab;
@@ -31,6 +33,10 @@ public class SunBlinded {
     private static final Logger LOGGER = LogUtils.getLogger();
 
     public SunBlinded(IEventBus modEventBus, ModContainer container) {
+
+        ModAttachments.register(modEventBus);
+        ModDataComponentTypes.register(modEventBus);
+
         ModItems.register(modEventBus);
         ModRecipes.register(modEventBus);
         ModCreativeModeTab.register(modEventBus);

@@ -1,18 +1,17 @@
-package net.thedragonskull.sunblinded.capabilitiy;
+package net.thedragonskull.sunblinded.attachments;
 
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityManager;
-import net.minecraftforge.common.capabilities.CapabilityToken;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.common.util.INBTSerializable;
-import net.minecraftforge.common.util.LazyOptional;
+import net.neoforged.neoforge.capabilities.ICapabilityProvider;
+import net.neoforged.neoforge.common.util.INBTSerializable;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.UnknownNullability;
 
 import javax.annotation.Nullable;
 
-public class PlayerSunBlindnessProvider implements ICapabilityProvider, INBTSerializable<CompoundTag> {
+/* todo: remove
+public class PlayerSunBlindnessProvider implements ICapabilityProvider<CompoundTag>, INBTSerializable<CompoundTag> {
 
     public static final Capability<PlayerSunBlindness> SUN_BLINDNESS =
             CapabilityManager.get(new CapabilityToken<>() {});
@@ -42,4 +41,20 @@ public class PlayerSunBlindnessProvider implements ICapabilityProvider, INBTSeri
         instance.setBlindPacketSent(tag.getBoolean("BlindPacketSent"));
         instance.setWasSunReachingEyes(tag.getBoolean("WasLookingAtSun"));
     }
+
+    @Override
+    public @Nullable Object getCapability(Object o, Object o2) {
+        return null;
+    }
+
+    @Override
+    public @UnknownNullability CompoundTag serializeNBT(HolderLookup.Provider provider) {
+        return null;
+    }
+
+    @Override
+    public void deserializeNBT(HolderLookup.Provider provider, CompoundTag compoundTag) {
+
+    }
 }
+*/

@@ -1,5 +1,6 @@
 package net.thedragonskull.sunblinded.item.custom;
 
+import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextColor;
 import net.minecraft.sounds.SoundEvent;
@@ -8,6 +9,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Equipable;
@@ -73,10 +75,10 @@ public class Sunglasses extends Item implements Equipable, ICurioItem {
     }
 
     @Override
-    public boolean canEquip(ItemStack stack, EquipmentSlot slot, Entity entity) {
+    public boolean canEquip(ItemStack stack, EquipmentSlot armorType, LivingEntity entity) {
         if (!(entity instanceof Player player)) return true;
 
-        if (slot == EquipmentSlot.HEAD) {
+        if (armorType == EquipmentSlot.HEAD) {
             return !SunglassesUtils.hasSunglassesInCurios(player);
         }
 
@@ -97,8 +99,8 @@ public class Sunglasses extends Item implements Equipable, ICurioItem {
     }
 
     @Override
-    public SoundEvent getEquipSound() {
-        return SoundEvents.CHICKEN_STEP;
+    public Holder<SoundEvent> getEquipSound() {
+        return Holder.direct(SoundEvents.CHICKEN_STEP);
     }
 
     // Curios
@@ -115,7 +117,7 @@ public class Sunglasses extends Item implements Equipable, ICurioItem {
     }
 
     @Override
-    public List<Component> getSlotsTooltip(List<Component> tooltips, ItemStack stack) {
+    public List<Component> getSlotsTooltip(List<Component> tooltips, TooltipContext context, ItemStack stack) {
         tooltips.clear();
         return tooltips;
     }

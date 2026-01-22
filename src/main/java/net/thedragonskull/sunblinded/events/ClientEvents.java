@@ -14,7 +14,7 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.thedragonskull.sunblinded.SunBlinded;
-import net.thedragonskull.sunblinded.capabilitiy.PlayerSunBlindnessProvider;
+import net.thedragonskull.sunblinded.attachments.PlayerSunBlindnessProvider;
 import net.thedragonskull.sunblinded.config.SunblindedCommonConfigs;
 import net.thedragonskull.sunblinded.effect.ModEffects;
 import net.thedragonskull.sunblinded.network.C2SSunBlindTriggerPacket;

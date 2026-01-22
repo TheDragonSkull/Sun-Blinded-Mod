@@ -1,12 +1,14 @@
-package net.thedragonskull.sunblinded.capabilitiy;
+package net.thedragonskull.sunblinded.attachments;
 
+import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
+import net.neoforged.neoforge.common.util.INBTSerializable;
 
-public class PlayerSunBlindness {
+public class PlayerSunBlindness implements INBTSerializable<CompoundTag> {
     private float exposure = 0f;
     private int cooldown = 0;
     private boolean blindPacketSent = false;
-
     private boolean wasSunReachingEyes = false;
 
     public float getExposure() {
@@ -47,6 +49,24 @@ public class PlayerSunBlindness {
 
     public void setWasSunReachingEyes(boolean b) {
         wasSunReachingEyes = b;
+    }
+
+    @Override
+    public CompoundTag serializeNBT(HolderLookup.Provider provider) {
+        CompoundTag tag = new CompoundTag();
+        tag.putFloat("Exposure", exposure);
+        tag.putInt("Cooldown", cooldown);
+        tag.putBoolean("BlindPacketSent", blindPacketSent);
+        tag.putBoolean("WasLookingAtSun", wasSunReachingEyes());
+        return tag;
+    }
+
+    @Override
+    public void deserializeNBT(HolderLookup.Provider provider, CompoundTag tag) {
+        setExposure(tag.getFloat("Exposure"));
+        setCooldown(tag.getInt("Cooldown"));
+        setBlindPacketSent(tag.getBoolean("BlindPacketSent"));
+        setWasSunReachingEyes(tag.getBoolean("WasLookingAtSun"));
     }
 
     public void reset() {
