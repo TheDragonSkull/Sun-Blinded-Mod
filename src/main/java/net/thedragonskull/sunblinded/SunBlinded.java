@@ -1,17 +1,16 @@
 package net.thedragonskull.sunblinded;
 
 import com.mojang.logging.LogUtils;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.config.ModConfig;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.thedragonskull.sunblinded.config.SunblindedCommonConfigs;
 import net.thedragonskull.sunblinded.effect.ModEffects;
 import net.thedragonskull.sunblinded.item.ModCreativeModeTab;
@@ -31,13 +30,7 @@ public class SunBlinded {
     public static final String MOD_ID = "sunblinded";
     private static final Logger LOGGER = LogUtils.getLogger();
 
-    public SunBlinded() {
-        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-
-        modEventBus.addListener(this::commonSetup);
-
-        MinecraftForge.EVENT_BUS.register(this);
-
+    public SunBlinded(IEventBus modEventBus, ModContainer container) {
         ModItems.register(modEventBus);
         ModRecipes.register(modEventBus);
         ModCreativeModeTab.register(modEventBus);
@@ -45,9 +38,10 @@ public class SunBlinded {
         ModLootModifiers.register(modEventBus);
         ModLootFunctions.register(modEventBus);
 
+        modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(this::addCreative);
 
-        FMLJavaModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, SunblindedCommonConfigs.SPEC, "sunblinded-common.toml");
+        container.registerConfig(ModConfig.Type.COMMON, SunblindedCommonConfigs.CONFIG_SPEC, "sunblinded-common.toml");
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
@@ -56,7 +50,7 @@ public class SunBlinded {
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
     }
 
-    @Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+    @EventBusSubscriber(modid = MOD_ID, value = Dist.CLIENT)
     public static class ClientModEvents {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
