@@ -11,6 +11,7 @@ import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import net.thedragonskull.sunblinded.attachments.ModAttachments;
 import net.thedragonskull.sunblinded.component.ModDataComponentTypes;
 import net.thedragonskull.sunblinded.config.SunblindedCommonConfigs;
@@ -62,7 +63,7 @@ public class SunBlinded {
             ModItemProperties.addCustomItemProperties();
 
             event.enqueueWork(() -> ModItems.ITEMS.getEntries().stream()
-                    .map(RegistryObject::get)
+                    .map(DeferredHolder::get)
                     .filter(item -> item instanceof Sunglasses)
                     .forEach(item -> CuriosRendererRegistry.register(item, SunglassesCurioRenderer::new)));
         }

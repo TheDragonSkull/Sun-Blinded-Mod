@@ -6,6 +6,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import net.thedragonskull.sunblinded.effect.ModEffects;
 import net.thedragonskull.sunblinded.util.SunglassesUtils;
@@ -21,7 +22,8 @@ public class ServerPayloadHandler {
 
     public void handleSunBlindTrigger(C2SSunBlindTriggerPacket msg, IPayloadContext ctx) {
         ctx.enqueueWork(() -> {
-            ServerPlayer player = (ServerPlayer) ctx.player();
+            if (!(ctx.player() instanceof ServerPlayer player)) return;
+
 
             if (!player.hasEffect(ModEffects.SUN_BLINDED_EFFECT)) {
 
@@ -45,7 +47,7 @@ public class ServerPayloadHandler {
                         false
                 ));
 
-                PacketHandler.sendToAllPlayer(new S2CBurningEyesSync(id, true));
+                PacketDistributor.sendToPlayersTrackingEntityAndSelf(player, new S2CBurningEyesSync(id, true));
             }
 
         });
@@ -53,7 +55,7 @@ public class ServerPayloadHandler {
 
     public void handleToggleGlasses(C2SToggleGlassesPacket msg, IPayloadContext ctx) {
         ctx.enqueueWork(() -> {
-            ServerPlayer player = (ServerPlayer) ctx.player();
+            if (!(ctx.player() instanceof ServerPlayer player)) return;
 
             ItemStack glasses = SunglassesUtils.getEquippedSunglasses(player);
             if (glasses == null) return;

@@ -11,19 +11,18 @@ import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.thedragonskull.sunblinded.SunBlinded;
-import net.thedragonskull.sunblinded.effect.SunBlindedEffect;
 import net.thedragonskull.sunblinded.events.BurningEyesClient;
 
 public class SunBlindEyesLayer extends RenderLayer<AbstractClientPlayer, PlayerModel<AbstractClientPlayer>> {
 
     private static final ResourceLocation[] FRAMES = new ResourceLocation[]{
-            new ResourceLocation(SunBlinded.MOD_ID, "textures/entity/eyes/eyes_0.png"),
-            new ResourceLocation(SunBlinded.MOD_ID, "textures/entity/eyes/eyes_1.png"),
-            new ResourceLocation(SunBlinded.MOD_ID, "textures/entity/eyes/eyes_2.png"),
-            new ResourceLocation(SunBlinded.MOD_ID, "textures/entity/eyes/eyes_3.png"),
-            new ResourceLocation(SunBlinded.MOD_ID, "textures/entity/eyes/eyes_4.png"),
-            new ResourceLocation(SunBlinded.MOD_ID, "textures/entity/eyes/eyes_5.png"),
-            new ResourceLocation(SunBlinded.MOD_ID, "textures/entity/eyes/eyes_6.png")
+            ResourceLocation.fromNamespaceAndPath(SunBlinded.MOD_ID, "textures/entity/eyes/eyes_0.png"),
+            ResourceLocation.fromNamespaceAndPath(SunBlinded.MOD_ID, "textures/entity/eyes/eyes_1.png"),
+            ResourceLocation.fromNamespaceAndPath(SunBlinded.MOD_ID, "textures/entity/eyes/eyes_2.png"),
+            ResourceLocation.fromNamespaceAndPath(SunBlinded.MOD_ID, "textures/entity/eyes/eyes_3.png"),
+            ResourceLocation.fromNamespaceAndPath(SunBlinded.MOD_ID, "textures/entity/eyes/eyes_4.png"),
+            ResourceLocation.fromNamespaceAndPath(SunBlinded.MOD_ID, "textures/entity/eyes/eyes_5.png"),
+            ResourceLocation.fromNamespaceAndPath(SunBlinded.MOD_ID, "textures/entity/eyes/eyes_6.png")
     };
 
     public SunBlindEyesLayer(RenderLayerParent<AbstractClientPlayer, PlayerModel<AbstractClientPlayer>> parent) {
@@ -43,9 +42,8 @@ public class SunBlindEyesLayer extends RenderLayer<AbstractClientPlayer, PlayerM
         this.getParentModel().head.render(
                 pPoseStack,
                 vc,
-                0xF000F0,
-                OverlayTexture.NO_OVERLAY,
-                1f, 1f, 1f, 1f
+                pPackedLight,
+                OverlayTexture.NO_OVERLAY
         );
 
         pPoseStack.popPose();

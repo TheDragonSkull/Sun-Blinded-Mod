@@ -17,6 +17,9 @@ public class ModDataComponentTypes {
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<String>> COLOR = register("color",
             builder -> builder.persistent(Codec.STRING));
 
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Boolean>> GLASSES_UP = register("GlassesUp",
+            builder -> builder.persistent(Codec.BOOL));
+
     private static <T> DeferredHolder<DataComponentType<?>, DataComponentType<T>> register(String name,
                                                                                            UnaryOperator<DataComponentType.Builder<T>> builderOperator) {
         return DATA_COMPONENT_TYPES.register(name, () -> builderOperator.apply(DataComponentType.builder()).build());

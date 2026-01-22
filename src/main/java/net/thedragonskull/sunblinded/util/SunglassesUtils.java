@@ -10,6 +10,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.thedragonskull.sunblinded.SunBlinded;
+import net.thedragonskull.sunblinded.component.ModDataComponentTypes;
 import net.thedragonskull.sunblinded.config.SunblindedCommonConfigs;
 import net.thedragonskull.sunblinded.item.ModItems;
 import top.theillusivec4.curios.api.CuriosApi;
@@ -31,7 +32,6 @@ public class SunglassesUtils {
 
         // 2. Curios slot
         return CuriosApi.getCuriosInventory(player)
-                .resolve()
                 .flatMap(inv -> inv.findFirstCurio(ModItems.SUNGLASSES.get()).map(SlotResult::stack))
                 .orElse(null);
     }
@@ -43,12 +43,11 @@ public class SunglassesUtils {
     }
 
     public static boolean areGlassesUp(ItemStack stack) {
-        if (stack == null) return false;
-        return stack.getOrCreateTag().getBoolean(TAG_GLASSES_UP);
+        return stack.getOrDefault(ModDataComponentTypes.GLASSES_UP.get(), false);
     }
 
     public static void setGlassesUp(ItemStack stack, boolean up) {
-        stack.getOrCreateTag().putBoolean(TAG_GLASSES_UP, up);
+        stack.set(ModDataComponentTypes.GLASSES_UP.get(), up);
     }
 
     public static boolean isLookingAtSun(Player player) {
@@ -78,16 +77,14 @@ public class SunglassesUtils {
         ));
 
         boolean sunVisible = result.getType() == HitResult.Type.MISS;
-        double threshold = SunblindedCommonConfigs.SUN_LOOKING_RADIUS.get();
+        double threshold = SunblindedCommonConfigs.CONFIGS.SUN_LOOKING_RADIUS.get();
 
         return level.isDay() && dot > threshold && sunVisible;
     }
 
     @Nullable
     public static String getColor(ItemStack stack) {
-        if (!stack.hasTag()) return null;
-        var tag = stack.getTag();
-        return tag.contains("color") ? tag.getString("color") : null;
+        return stack.get(ModDataComponentTypes.COLOR.get());
     }
 
     public static float sunglassesModel(String color) {
@@ -162,7 +159,7 @@ public class SunglassesUtils {
 
     public static ResourceLocation getSunBlindExposure() {
         if (SUNBLIND_EXPOSURE == null) {
-            SUNBLIND_EXPOSURE = new ResourceLocation(SunBlinded.MOD_ID, "shaders/post/sun_blind.json");
+            SUNBLIND_EXPOSURE = ResourceLocation.fromNamespaceAndPath(SunBlinded.MOD_ID, "shaders/post/sun_blind.json");
         }
         return SUNBLIND_EXPOSURE;
     }
@@ -171,7 +168,7 @@ public class SunglassesUtils {
 
     public static ResourceLocation getSunblindInvert() {
         if (SUNBLIND_INVERT == null) {
-            SUNBLIND_INVERT = new ResourceLocation(SunBlinded.MOD_ID, "shaders/post/sun_blind_invert.json");
+            SUNBLIND_INVERT = ResourceLocation.fromNamespaceAndPath(SunBlinded.MOD_ID, "shaders/post/sun_blind_invert.json");
         }
         return SUNBLIND_INVERT;
     }
