@@ -20,7 +20,6 @@ import net.thedragonskull.sunblinded.item.ModItems;
 import net.thedragonskull.sunblinded.item.custom.Sunglasses;
 import net.thedragonskull.sunblinded.loot.ModLootFunctions;
 import net.thedragonskull.sunblinded.loot.ModLootModifiers;
-import net.thedragonskull.sunblinded.network.PacketHandler;
 import net.thedragonskull.sunblinded.recipe.ModRecipes;
 import net.thedragonskull.sunblinded.render.SunglassesCurioRenderer;
 import net.thedragonskull.sunblinded.util.ModItemProperties;
@@ -61,8 +60,6 @@ public class SunBlinded {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
             ModItemProperties.addCustomItemProperties();
-
-            event.enqueueWork(PacketHandler::register);
 
             event.enqueueWork(() -> ModItems.ITEMS.getEntries().stream()
                     .map(RegistryObject::get)

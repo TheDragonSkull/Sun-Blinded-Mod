@@ -12,7 +12,7 @@ public class ModAttachments {
     public static final DeferredRegister<AttachmentType<?>> ATTACHMENTS =
             DeferredRegister.create(NeoForgeRegistries.ATTACHMENT_TYPES, SunBlinded.MOD_ID);
 
-    public static final Supplier<AttachmentType<?>> PLAYER_SUN_BLINDNESS = ATTACHMENTS.register(
+    public static final Supplier<AttachmentType<PlayerSunBlindness>> PLAYER_SUN_BLINDNESS = ATTACHMENTS.register(
             "player_sun_blindness",
             () -> AttachmentType.builder(PlayerSunBlindness::new)
                     .copyOnDeath()

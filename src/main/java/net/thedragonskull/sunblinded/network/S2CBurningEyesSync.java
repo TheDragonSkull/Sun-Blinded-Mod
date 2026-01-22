@@ -1,42 +1,31 @@
 package net.thedragonskull.sunblinded.network;
 
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.network.NetworkEvent;
-import net.thedragonskull.sunblinded.effect.SunBlindedEffect;
-import net.thedragonskull.sunblinded.events.BurningEyesClient;
+import net.minecraft.core.UUIDUtil;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
+import net.thedragonskull.sunblinded.SunBlinded;
 
 import java.util.UUID;
-import java.util.function.Supplier;
 
-public class S2CBurningEyesSync {
-    private final UUID playerId;
-    private final boolean blinded;
+public record S2CBurningEyesSync(UUID playerId, boolean blinded) implements CustomPacketPayload {
 
-    public S2CBurningEyesSync(UUID playerId, Boolean blinded) {
-        this.playerId = playerId;
-        this.blinded = blinded;
-    }
+    public static final CustomPacketPayload.Type<S2CBurningEyesSync> TYPE =
+            new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(SunBlinded.MOD_ID, "burning_eyes_sync_packet"));
 
-    public S2CBurningEyesSync(FriendlyByteBuf buf) {
-        this.playerId = buf.readUUID();
-        this.blinded = buf.readBoolean();
-    }
+    public static final StreamCodec<RegistryFriendlyByteBuf, S2CBurningEyesSync> STREAM_CODEC =
+            StreamCodec.composite(
+                    UUIDUtil.STREAM_CODEC,
+                    S2CBurningEyesSync::playerId,
+                    ByteBufCodecs.BOOL,
+                    S2CBurningEyesSync::blinded,
+                    S2CBurningEyesSync::new);
 
-    public void encode(FriendlyByteBuf buf) {
-        buf.writeUUID(playerId);
-        buf.writeBoolean(blinded);
-    }
-
-    public static void handle(S2CBurningEyesSync msg, Supplier<NetworkEvent.Context> ctx) {
-        ctx.get().enqueueWork(() -> {
-            if (msg.blinded) {
-                BurningEyesClient.addBlinded(msg.playerId);
-            } else {
-                BurningEyesClient.removeBlinded(msg.playerId);
-            }
-        });
-
-        ctx.get().setPacketHandled(true);
+    @Override
+    public CustomPacketPayload.Type<? extends CustomPacketPayload> type() {
+        return TYPE;
     }
 
 

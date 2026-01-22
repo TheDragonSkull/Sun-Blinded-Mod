@@ -19,7 +19,6 @@ import net.thedragonskull.sunblinded.config.SunblindedCommonConfigs;
 import net.thedragonskull.sunblinded.effect.ModEffects;
 import net.thedragonskull.sunblinded.network.C2SSunBlindTriggerPacket;
 import net.thedragonskull.sunblinded.network.C2SToggleGlassesPacket;
-import net.thedragonskull.sunblinded.network.PacketHandler;
 import net.thedragonskull.sunblinded.util.KeyBindings;
 import net.thedragonskull.sunblinded.util.SunglassesUtils;
 

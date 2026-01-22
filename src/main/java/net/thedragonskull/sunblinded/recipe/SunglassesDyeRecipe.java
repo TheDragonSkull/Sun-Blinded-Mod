@@ -1,34 +1,31 @@
 package net.thedragonskull.sunblinded.recipe;
 
-import com.google.gson.JsonObject;
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
+import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.thedragonskull.sunblinded.SunBlinded;
+import net.neoforged.neoforge.common.Tags;
+import net.thedragonskull.sunblinded.component.ModDataComponentTypes;
 import net.thedragonskull.sunblinded.item.ModItems;
-import org.jetbrains.annotations.Nullable;
 
 public class SunglassesDyeRecipe extends CustomRecipe {
 
-    public SunglassesDyeRecipe(ResourceLocation pId, CraftingBookCategory pCategory) {
-        super(pId, pCategory);
+    public SunglassesDyeRecipe(CraftingBookCategory pCategory) {
+        super(pCategory);
     }
 
     @Override
-    public boolean matches(CraftingContainer inv, Level level) {
+    public boolean matches(CraftingInput input, Level level) {
         int sunglassesCount = 0;
         int dyeCount = 0;
 
-        for (int i = 0; i < inv.getContainerSize(); i++) {
-            ItemStack stack = inv.getItem(i);
+        for (int i = 0; i < input.size(); i++) {
+            ItemStack stack = input.getItem(i);
             if (stack.isEmpty()) continue;
 
             if (stack.is(ModItems.SUNGLASSES.get())) {
@@ -46,12 +43,12 @@ public class SunglassesDyeRecipe extends CustomRecipe {
     }
 
     @Override
-    public ItemStack assemble(CraftingContainer inv, RegistryAccess registryAccess) {
+    public ItemStack assemble(CraftingInput input, HolderLookup.Provider registries) {
         ItemStack sunglasses = ItemStack.EMPTY;
         ItemStack dye = ItemStack.EMPTY;
 
-        for (int i = 0; i < inv.getContainerSize(); i++) {
-            ItemStack stack = inv.getItem(i);
+        for (int i = 0; i < input.size(); i++) {
+            ItemStack stack = input.getItem(i);
             if (stack.is(ModItems.SUNGLASSES.get())) {
                 sunglasses = stack;
             } else if (stack.is(Tags.Items.DYES)) {
@@ -63,15 +60,17 @@ public class SunglassesDyeRecipe extends CustomRecipe {
         result.setCount(1);
 
         String color = getColorFromDye(dye);
-        result.getOrCreateTag().putString("color", color);
+        result.set(ModDataComponentTypes.COLOR.get(), color);
 
-        if (sunglasses.hasTag() && sunglasses.getTag().contains("color")) return ItemStack.EMPTY;
+        if (sunglasses.has(ModDataComponentTypes.COLOR)) {
+            return ItemStack.EMPTY;
+        }
 
         return result;
     }
 
     private String getColorFromDye(ItemStack dye) {
-        ResourceLocation id = ForgeRegistries.ITEMS.getKey(dye.getItem());
+        ResourceLocation id = BuiltInRegistries.ITEM.getKey(dye.getItem());
         return id.getPath().replace("_dye", "");
     }
 
@@ -82,26 +81,6 @@ public class SunglassesDyeRecipe extends CustomRecipe {
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return Serializer.INSTANCE;
-    }
-
-    public static class Serializer implements RecipeSerializer<SunglassesDyeRecipe> {
-        public static final Serializer INSTANCE = new Serializer();
-        public static final ResourceLocation ID = new ResourceLocation(SunBlinded.MOD_ID, "sunglasses_dye");
-
-        @Override
-        public SunglassesDyeRecipe fromJson(ResourceLocation pRecipeId, JsonObject pSerializedRecipe) {
-            return new SunglassesDyeRecipe(pRecipeId, CraftingBookCategory.MISC);
-        }
-
-        @Override
-        public @Nullable SunglassesDyeRecipe fromNetwork(ResourceLocation pRecipeId, FriendlyByteBuf pBuffer) {
-            return new SunglassesDyeRecipe(pRecipeId, CraftingBookCategory.MISC);
-        }
-
-        @Override
-        public void toNetwork(FriendlyByteBuf pBuffer, SunglassesDyeRecipe pRecipe) {
-
-        }
+        return ModRecipes.SUNGLASSES_DYE_SERIALIZER.get();
     }
 }

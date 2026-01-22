@@ -31,7 +31,6 @@ import net.thedragonskull.sunblinded.attachments.PlayerSunBlindness;
 import net.thedragonskull.sunblinded.attachments.PlayerSunBlindnessProvider;
 import net.thedragonskull.sunblinded.effect.ModEffects;
 import net.thedragonskull.sunblinded.item.ModItems;
-import net.thedragonskull.sunblinded.network.PacketHandler;
 import net.thedragonskull.sunblinded.network.S2CBurningEyesSync;
 import net.thedragonskull.sunblinded.util.SunglassesUtils;
 

@@ -1,56 +1,22 @@
 package net.thedragonskull.sunblinded.network;
 
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
-import net.minecraftforge.network.NetworkEvent;
-import net.thedragonskull.sunblinded.effect.ModEffects;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
+import net.thedragonskull.sunblinded.SunBlinded;
 
-import java.util.UUID;
-import java.util.function.Supplier;
+public record C2SSunBlindTriggerPacket() implements CustomPacketPayload {
 
-public class C2SSunBlindTriggerPacket {
 
-    public C2SSunBlindTriggerPacket() {}
+    public static final CustomPacketPayload.Type<C2SSunBlindTriggerPacket> TYPE =
+            new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(SunBlinded.MOD_ID, "sun_blind_trigger_packet"));
 
-    public C2SSunBlindTriggerPacket(FriendlyByteBuf buf) {}
+    public static final StreamCodec<RegistryFriendlyByteBuf, C2SSunBlindTriggerPacket> STREAM_CODEC =
+            StreamCodec.unit(new C2SSunBlindTriggerPacket());
 
-    public void encode(FriendlyByteBuf buf) {
-    }
-
-    public static void handle(C2SSunBlindTriggerPacket msg, Supplier<NetworkEvent.Context> ctx) {
-        ctx.get().enqueueWork(() -> {
-
-            ServerPlayer player = ctx.get().getSender();
-            if (player == null) return;
-
-            if (!player.hasEffect(ModEffects.SUN_BLINDED_EFFECT.get())) {
-
-                UUID id = player.getUUID();
-
-                player.addEffect(new MobEffectInstance(
-                        ModEffects.SUN_BLINDED_EFFECT.get(),
-                        -1,
-                        0,
-                        false,
-                        false,
-                        true
-                ));
-
-                player.addEffect(new MobEffectInstance(
-                        MobEffects.BLINDNESS,
-                        20,
-                        255,
-                        false,
-                        false,
-                        false
-                ));
-
-                PacketHandler.sendToAllPlayer(new S2CBurningEyesSync(id, true));
-            }
-
-        });
-        ctx.get().setPacketHandled(true);
+    @Override
+    public CustomPacketPayload.Type<? extends CustomPacketPayload> type() {
+        return TYPE;
     }
 }

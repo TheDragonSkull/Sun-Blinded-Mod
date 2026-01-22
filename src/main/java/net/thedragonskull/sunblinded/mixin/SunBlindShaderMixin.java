@@ -7,8 +7,7 @@ import net.minecraft.client.renderer.PostChain;
 import net.minecraft.client.renderer.PostPass;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
-import net.thedragonskull.sunblinded.attachments.PlayerSunBlindness;
-import net.thedragonskull.sunblinded.attachments.PlayerSunBlindnessProvider;
+import net.thedragonskull.sunblinded.attachments.ModAttachments;
 import net.thedragonskull.sunblinded.effect.ModEffects;
 import net.thedragonskull.sunblinded.events.SunBlindClient;
 import net.thedragonskull.sunblinded.util.SunglassesUtils;
@@ -25,7 +24,7 @@ public abstract class SunBlindShaderMixin {
         Minecraft mc = Minecraft.getInstance();
         if (mc.player == null) return;
 
-        if (mc.player.hasEffect(ModEffects.SUN_BLINDED_EFFECT.get())) {
+        if (mc.player.hasEffect(ModEffects.SUN_BLINDED_EFFECT)) {
             if (SunBlindClient.shaderLoaded) {
                 mc.gameRenderer.shutdownEffect();
                 SunBlindClient.shaderLoaded = false;
@@ -48,9 +47,8 @@ public abstract class SunBlindShaderMixin {
         }
 
         float exposure = mc.player
-                .getCapability(PlayerSunBlindnessProvider.SUN_BLINDNESS)
-                .map(PlayerSunBlindness::getExposure)
-                .orElse(0f);
+                .getData(ModAttachments.PLAYER_SUN_BLINDNESS.get())
+                .getExposure();
 
         float eased = (float) Mth.smoothstep(exposure);
         float saturation = 1.0F + exposure * 20.5F;
