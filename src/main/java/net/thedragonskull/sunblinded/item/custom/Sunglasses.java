@@ -5,6 +5,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextColor;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
@@ -38,17 +39,6 @@ public class Sunglasses extends Item implements Equipable, ICurioItem {
         if (!(slotContext.entity() instanceof Player)) return;
 
         SunglassesUtils.setGlassesUp(stack, false);
-    }
-
-    @Override
-    public void onEquipFromUse(SlotContext slotContext, ItemStack stack) {
-        if (!(slotContext.entity() instanceof Player player)) return;
-
-        ItemStack glasses = SunglassesUtils.getEquippedSunglasses(player);
-        if (glasses == null) return;
-
-        SunglassesUtils.setGlassesUp(glasses, false);
-        ICurioItem.super.onEquipFromUse(slotContext, stack);
     }
 
     @Override
@@ -112,13 +102,25 @@ public class Sunglasses extends Item implements Equipable, ICurioItem {
     }
 
     @Override
-    public @NotNull ICurio.SoundInfo getEquipSound(SlotContext slotContext, ItemStack stack) {
-        return new ICurio.SoundInfo(SoundEvents.CHICKEN_STEP, 1.0F, 1.0F);
+    public void onEquipFromUse(SlotContext slotContext, ItemStack stack) {
+        if (!(slotContext.entity() instanceof Player player)) return;
+
+        ItemStack glasses = SunglassesUtils.getEquippedSunglasses(player);
+        if (glasses == null) return;
+
+        SunglassesUtils.setGlassesUp(glasses, false);
+        slotContext.entity().level().playSound(
+                null,
+                slotContext.entity().blockPosition(),
+                SoundEvents.CHICKEN_STEP,
+                SoundSource.PLAYERS,
+                1.0F,
+                1.0F
+        );
     }
 
     @Override
     public List<Component> getSlotsTooltip(List<Component> tooltips, TooltipContext context, ItemStack stack) {
-        tooltips.clear();
-        return tooltips;
+        return List.of();
     }
 }

@@ -25,11 +25,6 @@ public class SunglassesCurioRenderer implements ICurioRenderer {
         if (!(living instanceof Player player)) return;
         if (player.isInvisible()) return;
 
-        Minecraft mc = Minecraft.getInstance();
-        if (mc.player == player && mc.options.getCameraType().isFirstPerson()) {
-            return;
-        }
-
         if (!(renderLayerParent.getModel() instanceof HumanoidModel<?> humanoid)) {
             return;
         }
@@ -46,7 +41,7 @@ public class SunglassesCurioRenderer implements ICurioRenderer {
         ItemStack glasses = SunglassesUtils.getEquippedSunglasses(player);
         if (player.getItemBySlot(EquipmentSlot.HEAD) == stack) return;
 
-        if (SunglassesUtils.areGlassesUp(glasses)) {
+        if (glasses != null && SunglassesUtils.areGlassesUp(glasses)) {
             matrixStack.translate(0, 0.2F, 0F);
             matrixStack.mulPose(Axis.XP.rotationDegrees(40.0F));
         }

@@ -15,7 +15,7 @@ import net.thedragonskull.sunblinded.component.ModDataComponentTypes;
 import net.thedragonskull.sunblinded.item.ModItems;
 
 @JeiPlugin
-public class JEISunblindedPlugin implements IModPlugin {
+public class JEISunblindedPlugin implements IModPlugin { //todo no va
 
     @Override
     public ResourceLocation getPluginUid() {
