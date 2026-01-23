@@ -56,33 +56,6 @@ public class ClientEvents {
         RenderSystem.disableBlend();
     }
 
-    @SubscribeEvent
-    public static void onScreenRender(ScreenEvent.Render.Post event) {
-        if (!SunblindedCommonConfigs.CONFIGS.ENABLE_SUNGLASSES_OVERLAY.get()) return;
-
-        Minecraft mc = Minecraft.getInstance();
-        Player player = mc.player;
-        if (player == null) return;
-
-        ItemStack sunglasses = SunglassesUtils.getEquippedSunglasses(player);
-        if (sunglasses == null) return;
-
-        if (SunglassesUtils.areGlassesUp(sunglasses)) return;
-
-        GuiGraphics gg = event.getGuiGraphics();
-        int w = event.getScreen().width;
-        int h = event.getScreen().height;
-
-        RenderSystem.enableBlend();
-        RenderSystem.defaultBlendFunc();
-        RenderSystem.disableDepthTest();
-
-        gg.fill(0, 0, w, h, 1000, getOverlayColor(sunglasses));
-
-        RenderSystem.enableDepthTest();
-        RenderSystem.disableBlend();
-    }
-
     private static int getOverlayColor(ItemStack sunglasses) {
         String glassColor = SunglassesUtils.getColor(sunglasses);
 
