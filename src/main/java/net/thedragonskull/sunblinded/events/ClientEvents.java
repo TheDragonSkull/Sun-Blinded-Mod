@@ -1,20 +1,20 @@
 package net.thedragonskull.sunblinded.events;
 
+import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.InputEvent;
-import net.minecraftforge.client.event.RenderGuiEvent;
-import net.minecraftforge.client.event.RenderLevelStageEvent;
-import net.minecraftforge.client.event.ScreenEvent;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.*;
+import net.neoforged.neoforge.event.tick.PlayerTickEvent;
+import net.neoforged.neoforge.network.PacketDistributor;
 import net.thedragonskull.sunblinded.SunBlinded;
-import net.thedragonskull.sunblinded.attachments.PlayerSunBlindnessProvider;
+import net.thedragonskull.sunblinded.attachments.ModAttachments;
+import net.thedragonskull.sunblinded.attachments.PlayerSunBlindness;
 import net.thedragonskull.sunblinded.config.SunblindedCommonConfigs;
 import net.thedragonskull.sunblinded.effect.ModEffects;
 import net.thedragonskull.sunblinded.network.C2SSunBlindTriggerPacket;
@@ -22,12 +22,12 @@ import net.thedragonskull.sunblinded.network.C2SToggleGlassesPacket;
 import net.thedragonskull.sunblinded.util.KeyBindings;
 import net.thedragonskull.sunblinded.util.SunglassesUtils;
 
-@Mod.EventBusSubscriber(modid = SunBlinded.MOD_ID, value = Dist.CLIENT)
+@EventBusSubscriber(modid = SunBlinded.MOD_ID, value = Dist.CLIENT)
 public class ClientEvents {
 
     @SubscribeEvent
     public static void onRenderGuiOverlay(RenderGuiEvent.Post event) {
-        if (!SunblindedCommonConfigs.ENABLE_SUNGLASSES_OVERLAY.get()) return;
+        if (!SunblindedCommonConfigs.CONFIGS.ENABLE_SUNGLASSES_OVERLAY.get()) return;
 
         Minecraft mc = Minecraft.getInstance();
         Player player = mc.player;
@@ -41,8 +41,9 @@ public class ClientEvents {
         if (SunglassesUtils.areGlassesUp(sunglasses)) return;
 
         GuiGraphics guiGraphics = event.getGuiGraphics();
-        int width = event.getWindow().getGuiScaledWidth();
-        int height = event.getWindow().getGuiScaledHeight();
+        Window window = Minecraft.getInstance().getWindow();
+        int width = window.getGuiScaledWidth();
+        int height = window.getGuiScaledHeight();
 
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
@@ -57,7 +58,7 @@ public class ClientEvents {
 
     @SubscribeEvent
     public static void onScreenRender(ScreenEvent.Render.Post event) {
-        if (!SunblindedCommonConfigs.ENABLE_SUNGLASSES_OVERLAY.get()) return;
+        if (!SunblindedCommonConfigs.CONFIGS.ENABLE_SUNGLASSES_OVERLAY.get()) return;
 
         Minecraft mc = Minecraft.getInstance();
         Player player = mc.player;
@@ -93,14 +94,12 @@ public class ClientEvents {
     }
 
     @SubscribeEvent
-    public static void onClientTick(TickEvent.ClientTickEvent event) {
-        if (event.phase != TickEvent.Phase.END) return;
-
+    public static void onClientTick(ClientTickEvent event) {
         Minecraft mc = Minecraft.getInstance();
         Player player = mc.player;
         if (player == null) return;
 
-        boolean sunBlinded = player.hasEffect(ModEffects.SUN_BLINDED_EFFECT.get());
+        boolean sunBlinded = player.hasEffect(ModEffects.SUN_BLINDED_EFFECT);
 
         if (sunBlinded) {
 
@@ -125,75 +124,69 @@ public class ClientEvents {
     }
 
     @SubscribeEvent
-    public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
-        if (event.phase != TickEvent.Phase.END) return;
-        if (!event.player.level().isClientSide) return;
+    public static void onPlayerTick(PlayerTickEvent event) {
+        Player player = Minecraft.getInstance().player;
+        if (player == null) return;
 
-        Minecraft mc = Minecraft.getInstance();
-        if (event.player != mc.player) return;
+        if (!player.level().isClientSide) return;
 
-        Player player = event.player;
+        PlayerSunBlindness data = player.getData(ModAttachments.PLAYER_SUN_BLINDNESS);
 
-        player.getCapability(PlayerSunBlindnessProvider.SUN_BLINDNESS).ifPresent(data -> {
+        if (player.hasEffect(ModEffects.SUN_BLINDED_EFFECT)) {
+            data.reset();
+            data.setCooldown(100);
+            return;
+        }
 
-            if (player.hasEffect(ModEffects.SUN_BLINDED_EFFECT.get())) {
-                data.reset();
-                data.setCooldown(100);
-                return;
-            }
+        if (data.getCooldown() > 0) {
+            data.tickCooldown();
+            return;
+        }
 
-            if (data.getCooldown() > 0) {
-                data.tickCooldown();
-                return;
-            }
+        ItemStack glasses = SunglassesUtils.getEquippedSunglasses(player);
+        boolean glassesProtect = glasses != null && !SunglassesUtils.areGlassesUp(glasses);
 
-            ItemStack glasses = SunglassesUtils.getEquippedSunglasses(player);
-            boolean glassesProtect = glasses != null && !SunglassesUtils.areGlassesUp(glasses);
+        boolean sunReachesEyes = SunglassesUtils.isLookingAtSun(player) && !glassesProtect;
 
-            boolean sunReachesEyes = SunglassesUtils.isLookingAtSun(player) && !glassesProtect;
+        float delta = 1f / (5f * 20f);
+        if (sunReachesEyes) data.addExposure(delta);
+        else data.addExposure(-delta);
 
-            float delta = 1f / (5f * 20f);
-            if (sunReachesEyes) data.addExposure(delta);
-            else data.addExposure(-delta);
+        if (data.wasSunReachingEyes() && !sunReachesEyes && data.getExposure() > 0.15f) {
+            SunAfterimageClient.requestCapture(data.getExposure());
+        }
 
-            if (data.wasSunReachingEyes() && !sunReachesEyes && data.getExposure() > 0.15f) {
-                SunAfterimageClient.requestCapture(data.getExposure());
-            }
+        if (data.getExposure() >= 1.0f && !data.isBlindPacketSent()) {
+            data.setBlindPacketSent(true);
+            PacketDistributor.sendToServer(new C2SSunBlindTriggerPacket());
+        }
 
-            if (data.getExposure() >= 1.0f && !data.isBlindPacketSent()) {
-                data.setBlindPacketSent(true);
-                PacketHandler.sendToServer(new C2SSunBlindTriggerPacket());
-            }
+        if (data.getExposure() <= 0f) {
+            data.setBlindPacketSent(false);
+        }
 
-            if (data.getExposure() <= 0f) {
-                data.setBlindPacketSent(false);
-            }
-
-            data.setWasSunReachingEyes(sunReachesEyes);
-        });
+        data.setWasSunReachingEyes(sunReachesEyes);
     }
 
     @SubscribeEvent
     public static void onInputKeyEvent(InputEvent.Key event) {
         if (KeyBindings.INSTANCE.TOGGLE_GLASSES.consumeClick()) {
             Player player = Minecraft.getInstance().player;
-            if (player != null) {
-                ItemStack glasses = SunglassesUtils.getEquippedSunglasses(player);
-                if (glasses != null) {
-                    player.getCapability(PlayerSunBlindnessProvider.SUN_BLINDNESS).ifPresent(data -> {
+            if (player == null) return;
 
-                        boolean goingDown = SunglassesUtils.areGlassesUp(glasses);
+            ItemStack glasses = SunglassesUtils.getEquippedSunglasses(player);
+            if (glasses == null) return;
 
-                        if (goingDown && SunglassesUtils.isLookingAtSun(player) && (data.getExposure() > 0.15F && data.getExposure() < 1.0F)) {
-                            SunAfterimageClient.requestCapture(data.getExposure());
-                        }
-                    });
+            PlayerSunBlindness data = player.getData(ModAttachments.PLAYER_SUN_BLINDNESS);
 
-                    boolean hasSunglassesInCurios = SunglassesUtils.hasSunglassesInCurios(player);
-                    if (hasSunglassesInCurios) {
-                        PacketHandler.sendToServer(new C2SToggleGlassesPacket());
-                    }
-                }
+            boolean goingDown = SunglassesUtils.areGlassesUp(glasses);
+
+            if (goingDown && SunglassesUtils.isLookingAtSun(player) && (data.getExposure() > 0.15F && data.getExposure() < 1.0F)) {
+                SunAfterimageClient.requestCapture(data.getExposure());
+            }
+
+            if (SunglassesUtils.hasSunglassesInCurios(player)) {
+                PacketDistributor.sendToServer(new C2SToggleGlassesPacket());
             }
         }
     }

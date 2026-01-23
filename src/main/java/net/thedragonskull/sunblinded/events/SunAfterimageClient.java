@@ -3,8 +3,12 @@ package net.thedragonskull.sunblinded.events;
 import com.mojang.blaze3d.pipeline.RenderTarget;
 import com.mojang.blaze3d.pipeline.TextureTarget;
 import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.texture.DynamicTexture;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
 
 public class SunAfterimageClient {
@@ -18,6 +22,9 @@ public class SunAfterimageClient {
     public static final int MAX_FADE_TICKS = 100;
 
     private static float requestedExposure;
+
+    public static DynamicTexture afterimageTexture;
+    public static ResourceLocation AFTERIMAGE_RL;
 
     public static void requestCapture(float exposure) {
         if (active || captureRequested) return;
@@ -40,6 +47,11 @@ public class SunAfterimageClient {
                 snapshot.destroyBuffers();
             }
             snapshot = new TextureTarget(w, h, true, Minecraft.ON_OSX);
+
+            afterimageTexture = new DynamicTexture(w, h, false);
+            AFTERIMAGE_RL = Minecraft.getInstance()
+                    .getTextureManager()
+                    .register("sun_afterimage", afterimageTexture);
         }
 
         GlStateManager._glBindFramebuffer(GL30.GL_READ_FRAMEBUFFER, main.frameBufferId);
@@ -50,6 +62,16 @@ public class SunAfterimageClient {
                 0, 0, w, h,
                 GL30.GL_COLOR_BUFFER_BIT,
                 GL30.GL_NEAREST
+        );
+
+        afterimageTexture.bind();
+
+        GL11.glCopyTexSubImage2D(
+                GL11.GL_TEXTURE_2D,
+                0,
+                0, 0,
+                0, 0,
+                w, h
         );
 
         GlStateManager._glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
