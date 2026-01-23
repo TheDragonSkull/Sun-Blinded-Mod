@@ -6,6 +6,8 @@ import com.mojang.blaze3d.vertex.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
@@ -166,32 +168,48 @@ public class CommonEvents {
 
 
     @SubscribeEvent
-    public static void onRenderGui(RenderGuiLayerEvent.Post event) {
+    public static void onRenderGui(RenderGuiLayerEvent.Pre event) {
         if (!SunAfterimageClient.active) return;
         if (SunAfterimageClient.snapshot == null) return;
 
         float alpha = (SunAfterimageClient.fadeTicks
                 / (float) SunAfterimageClient.MAX_FADE_TICKS) * 0.5F;
 
+        GuiGraphics gg = event.getGuiGraphics();
         Minecraft mc = Minecraft.getInstance();
         Window win = mc.getWindow();
-        GuiGraphics gg = event.getGuiGraphics();
 
-        RenderSystem.enableBlend();
-        RenderSystem.defaultBlendFunc();
+        int fbW = win.getWidth();
+        int fbH = win.getHeight();
 
-        gg.setColor(1f, 1f, 1f, alpha);
+        int guiW = win.getGuiScaledWidth();
+        int guiH = win.getGuiScaledHeight();
 
+        float scaleX = (float) guiW / fbW;
+        float scaleY = (float) guiH / fbH;
+
+        gg.pose().pushPose();
+
+        // 🔥 Convertimos framebuffer → GUI space
+        gg.pose().scale(scaleX, scaleY, 1f);
+
+        gg.setColor(1f, 1f, 1f, alpha); // 👈 ESTO SÍ funciona
+
+        // Screenshot exacto + flip vertical
         gg.blit(
                 SunAfterimageClient.AFTERIMAGE_RL,
-                0, 0,
-                0, 0,
-                win.getGuiScaledWidth(),
-                win.getGuiScaledHeight(),
-                win.getGuiScaledWidth(),
-                win.getGuiScaledHeight()
+                0,
+                0,
+                0,
+                0,
+                fbW,
+                fbH,
+                fbW,
+                fbH
         );
 
         gg.setColor(1f, 1f, 1f, 1f);
+        gg.pose().popPose();
     }
+
 }

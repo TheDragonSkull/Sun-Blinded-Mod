@@ -121,7 +121,9 @@ public class ClientEvents {
 
         boolean sunReachesEyes = SunglassesUtils.isLookingAtSun(player) && !glassesProtect;
 
-        float delta = 1f / (5f * 20f);
+        float tickRate = 40f;
+        float targetSeconds = 5f;
+        float delta = 1f / (targetSeconds * tickRate);
         if (sunReachesEyes) data.addExposure(delta);
         else data.addExposure(-delta);
 
@@ -167,9 +169,6 @@ public class ClientEvents {
     @SubscribeEvent
     public static void onRenderLevel(RenderLevelStageEvent event) {
         if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_LEVEL) return;
-
-        Minecraft mc = Minecraft.getInstance();
-        if (mc.level == null) return;
         if (!RenderSystem.isOnRenderThread()) return;
 
         SunAfterimageClient.captureIfRequested();

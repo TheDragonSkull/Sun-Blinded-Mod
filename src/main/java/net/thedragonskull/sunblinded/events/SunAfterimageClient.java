@@ -7,6 +7,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.thedragonskull.sunblinded.SunBlinded;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
 
@@ -24,6 +25,7 @@ public class SunAfterimageClient {
 
     public static DynamicTexture afterimageTexture;
     public static ResourceLocation AFTERIMAGE_RL;
+
 
     public static void requestCapture(float exposure) {
         if (active || captureRequested) return;
@@ -45,11 +47,11 @@ public class SunAfterimageClient {
             if (snapshot != null) {
                 snapshot.destroyBuffers();
             }
+
             snapshot = new TextureTarget(w, h, true, Minecraft.ON_OSX);
 
             afterimageTexture = new DynamicTexture(w, h, false);
-            AFTERIMAGE_RL = Minecraft.getInstance()
-                    .getTextureManager()
+            AFTERIMAGE_RL = mc.getTextureManager()
                     .register("sun_afterimage", afterimageTexture);
         }
 
@@ -63,8 +65,8 @@ public class SunAfterimageClient {
                 GL30.GL_NEAREST
         );
 
+        // Copiar snapshot → DynamicTexture
         afterimageTexture.bind();
-
         GL11.glCopyTexSubImage2D(
                 GL11.GL_TEXTURE_2D,
                 0,
