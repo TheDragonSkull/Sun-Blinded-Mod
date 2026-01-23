@@ -7,22 +7,22 @@
   ],
   "passes": [
     {
-      "name": "outline_soft",
+      "name": "sunblinded:outline_soft",
       "intarget": "minecraft:main",
       "outtarget": "swap"
     },
     {
-      "name": "deconverge",
+      "name": "sunblinded:deconverge",
       "intarget": "swap",
       "outtarget": "swap2"
     },
     {
-      "name": "blobs",
+      "name": "sunblinded:blobs",
       "intarget": "swap2",
       "outtarget": "swap3"
     },
     {
-      "name": "phosphor",
+      "name": "sunblinded:phosphor",
       "intarget": "swap3",
       "outtarget": "swap",
       "auxtargets": [

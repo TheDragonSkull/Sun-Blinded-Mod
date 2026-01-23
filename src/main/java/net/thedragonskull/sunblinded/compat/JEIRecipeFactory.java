@@ -2,6 +2,7 @@ package net.thedragonskull.sunblinded.compat;
 
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.thedragonskull.sunblinded.component.ModDataComponentTypes;
 import net.thedragonskull.sunblinded.item.ModItems;
 
 import java.util.ArrayList;
@@ -19,7 +20,7 @@ public class JEIRecipeFactory {
             Ingredient dye = Ingredient.of(dyeItem);
 
             ItemStack output = new ItemStack(ModItems.SUNGLASSES.get());
-            output.getOrCreateTag().putString("color", color.getName());
+            output.set(ModDataComponentTypes.COLOR, color.getName());
 
             recipes.add(new SunglassesDyeJeiRecipe(
                     baseGlasses,
@@ -39,7 +40,7 @@ public class JEIRecipeFactory {
 
         for (DyeColor color : DyeColor.values()) {
             ItemStack input = baseGlasses.copy();
-            input.getOrCreateTag().putString("color", color.getName());
+            input.set(ModDataComponentTypes.COLOR, color.getName());
 
             ItemStack output = baseGlasses.copy();
 

@@ -94,7 +94,7 @@ public class ClientEvents {
     }
 
     @SubscribeEvent
-    public static void onClientTick(ClientTickEvent event) {
+    public static void onClientTick(ClientTickEvent.Pre event) {
         Minecraft mc = Minecraft.getInstance();
         Player player = mc.player;
         if (player == null) return;
@@ -124,7 +124,7 @@ public class ClientEvents {
     }
 
     @SubscribeEvent
-    public static void onPlayerTick(PlayerTickEvent event) {
+    public static void onPlayerTick(PlayerTickEvent.Post event) {
         Player player = Minecraft.getInstance().player;
         if (player == null) return;
 

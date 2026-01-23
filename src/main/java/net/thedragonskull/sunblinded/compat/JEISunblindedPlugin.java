@@ -3,11 +3,15 @@ package net.thedragonskull.sunblinded.compat;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.helpers.IGuiHelper;
+import mezz.jei.api.ingredients.subtypes.ISubtypeInterpreter;
+import mezz.jei.api.ingredients.subtypes.UidContext;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import mezz.jei.api.registration.ISubtypeRegistration;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 import net.thedragonskull.sunblinded.SunBlinded;
+import net.thedragonskull.sunblinded.component.ModDataComponentTypes;
 import net.thedragonskull.sunblinded.item.ModItems;
 
 @JeiPlugin
@@ -15,7 +19,7 @@ public class JEISunblindedPlugin implements IModPlugin {
 
     @Override
     public ResourceLocation getPluginUid() {
-        return new ResourceLocation(SunBlinded.MOD_ID, "jei_plugin");
+        return ResourceLocation.fromNamespaceAndPath(SunBlinded.MOD_ID, "jei_plugin");
     }
 
     @Override
@@ -46,11 +50,18 @@ public class JEISunblindedPlugin implements IModPlugin {
     public void registerItemSubtypes(ISubtypeRegistration registration) {
         registration.registerSubtypeInterpreter(
                 ModItems.SUNGLASSES.get(),
-                (stack, context) -> {
-                    if (stack.hasTag() && stack.getTag().contains("color")) {
-                        return stack.getTag().getString("color");
+                new ISubtypeInterpreter<ItemStack>() {
+                    @Override
+                    public Object getSubtypeData(ItemStack stack, UidContext context) {
+                        String color = stack.get(ModDataComponentTypes.COLOR);
+                        return color != null ? color : "classic";
                     }
-                    return "classic";
+
+                    @Override
+                    public String getLegacyStringSubtypeInfo(ItemStack stack, UidContext context) {
+                        String color = stack.get(ModDataComponentTypes.COLOR);
+                        return color != null ? color : "";
+                    }
                 }
         );
     }

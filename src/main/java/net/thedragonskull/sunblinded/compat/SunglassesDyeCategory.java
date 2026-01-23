@@ -6,11 +6,9 @@ import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
+import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
-import mezz.jei.common.Internal;
-import mezz.jei.library.gui.helpers.CraftingGridHelper;
-import mezz.jei.library.gui.recipes.ShapelessIcon;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
@@ -25,8 +23,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class SunglassesDyeCategory implements IRecipeCategory<SunglassesDyeJeiRecipe> {
-    public static final ResourceLocation UID =
-            new ResourceLocation(SunBlinded.MOD_ID, "sunglasses_dye");
+    public static final ResourceLocation UID = ResourceLocation.fromNamespaceAndPath(SunBlinded.MOD_ID, "sunglasses_dye");
 
     public static final RecipeType<SunglassesDyeJeiRecipe> TYPE =
             new RecipeType<>(UID, SunglassesDyeJeiRecipe.class);
@@ -34,18 +31,12 @@ public class SunglassesDyeCategory implements IRecipeCategory<SunglassesDyeJeiRe
     private final IDrawable background;
     private final IDrawable icon;
     private final IDrawable arrow;
-    private final ShapelessIcon shapelessIcon;
 
     public SunglassesDyeCategory(IGuiHelper guiHelper) {
         this.background = guiHelper.createBlankDrawable(120, 54);
         this.icon = guiHelper.createDrawableItemStack(new ItemStack(ModItems.SUNGLASSES.get()));
 
         this.arrow = guiHelper.getRecipeArrow();
-
-        this.shapelessIcon = new ShapelessIcon(
-                Internal.getTextures().getShapelessIcon(),
-                110, 0
-        );
     }
 
     @Override
@@ -73,16 +64,6 @@ public class SunglassesDyeCategory implements IRecipeCategory<SunglassesDyeJeiRe
                      GuiGraphics guiGraphics, double mouseX, double mouseY) {
 
         arrow.draw(guiGraphics, 60, 18);
-        shapelessIcon.draw(guiGraphics);
-
-        if (shapelessIcon.isMouseOver((int) mouseX, (int) mouseY)) {
-            guiGraphics.renderTooltip(
-                    Minecraft.getInstance().font,
-                    Component.translatable("jei.tooltip.shapeless.recipe"),
-                    (int) mouseX,
-                    (int) mouseY
-            );
-        }
     }
 
     @Override
@@ -91,7 +72,16 @@ public class SunglassesDyeCategory implements IRecipeCategory<SunglassesDyeJeiRe
             SunglassesDyeJeiRecipe recipe,
             IFocusGroup focuses
     ) {
-        CraftingGridHelper gridHelper = CraftingGridHelper.INSTANCE;
+        builder.addSlot(RecipeIngredientRole.INPUT, 0, 18)
+                .addItemStack(recipe.getInputGlasses());
+
+        builder.addSlot(RecipeIngredientRole.INPUT, 18, 18)
+                .addIngredients(recipe.getDyeIngredient());
+
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 96, 18)
+                .addItemStack(recipe.getOutput());
+
+/*        CraftingGridHelper gridHelper = CraftingGridHelper.INSTANCE;
 
         List<List<ItemStack>> inputs = new ArrayList<>();
         inputs.add(Collections.singletonList(recipe.getInputGlasses())); // slot 0
@@ -102,6 +92,6 @@ public class SunglassesDyeCategory implements IRecipeCategory<SunglassesDyeJeiRe
         gridHelper.createAndSetInputs(builder, VanillaTypes.ITEM_STACK, inputs, 2, 1);
 
         // Output
-        gridHelper.createAndSetOutputs(builder, VanillaTypes.ITEM_STACK, Collections.singletonList(recipe.getOutput()));
+        gridHelper.createAndSetOutputs(builder, VanillaTypes.ITEM_STACK, Collections.singletonList(recipe.getOutput()));*/
     }
 }

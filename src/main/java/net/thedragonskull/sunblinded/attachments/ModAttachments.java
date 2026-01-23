@@ -14,7 +14,7 @@ public class ModAttachments {
 
     public static final Supplier<AttachmentType<PlayerSunBlindness>> PLAYER_SUN_BLINDNESS = ATTACHMENTS.register(
             "player_sun_blindness",
-            () -> AttachmentType.builder(PlayerSunBlindness::new)
+            () -> AttachmentType.serializable(PlayerSunBlindness::new)
                     .copyOnDeath()
                     .build()
     );
