@@ -6,6 +6,9 @@
 [![CurseForge Versions](https://cf.way2muchnoise.eu/versions/1437424.svg)](https://www.curseforge.com/minecraft/mc-mods/thedragons-mini-sun-blinded)
 [![CurseForge Downloads](https://cf.way2muchnoise.eu/short_1437424_downloads.svg)](https://www.curseforge.com/minecraft/mc-mods/thedragons-mini-sun-blinded)
 
+[![Modrinth Versions](https://img.shields.io/modrinth/game-versions/MP4gOBQY?label=Avaliable%20for&color=82ff80)](https://modrinth.com/mod/thedragons-mini-sun-blinded) 
+[![Modrinth Downloads](https://img.shields.io/modrinth/dt/MP4gOBQY?logo=modrinth&color=82ff80)](https://modrinth.com/mod/thedragons-mini-sun-blinded)
+
 ---
 
 # 📖 About
